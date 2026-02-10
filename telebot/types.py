@@ -12032,6 +12032,9 @@ class UniqueGift(JsonDeserializable):
     :param is_premium: Optional. True, if the gift can only be purchased by Telegram Premium subscribers
     :type is_premium: :obj:`bool`
 
+    :param is_burned: Optional. True, if the gift was used to craft another gift and isn't available anymore
+    :type is_burned: :obj:`bool`
+
     :param colors: Optional. The color scheme that can be used by the gift's owner for the chat's name, replies to messages and link previews; for business account gifts and gifts that are currently on sale only
     :type colors: :class:`UniqueGiftColors`
     :param publisher_chat: Optional. Information about the chat that published the gift
@@ -12040,7 +12043,8 @@ class UniqueGift(JsonDeserializable):
     :return: Instance of the class
     :rtype: :class:`UniqueGift`
     """
-    def __init__(self, base_name, name, number, model, symbol, backdrop, gift_id, publisher_chat=None, is_from_blockchain=None, is_premium=None, colors=None, **kwargs):
+    def __init__(self, base_name, name, number, model, symbol, backdrop, gift_id, publisher_chat=None, is_from_blockchain=None, is_premium=None, colors=None,
+                    is_burned=None, **kwargs):
         self.base_name: str = base_name
         self.name: str = name
         self.number: int = number
@@ -12052,6 +12056,7 @@ class UniqueGift(JsonDeserializable):
         self.is_premium: Optional[bool] = is_premium
         self.colors: Optional[UniqueGiftColors] = colors
         self.publisher_chat: Optional[Chat] = publisher_chat
+        self.is_burned: Optional[bool] = is_burned
 
     @classmethod
     def de_json(cls, json_string):
@@ -12082,14 +12087,18 @@ class UniqueGiftModel(JsonDeserializable):
     :param rarity_per_mille: The number of unique gifts that receive this model for every 1000 gifts upgraded
     :type rarity_per_mille: :obj:`int`
 
+    :param rarity: Optional. Rarity of the model if it is a crafted model. Currently, can be “uncommon”, “rare”, “epic”, or “legendary”.
+    :type rarity: :obj:`str`
+
     :return: Instance of the class
     :rtype: :class:`UniqueGiftModel`
 
     """
-    def __init__(self, name, sticker, rarity_per_mille, **kwargs):
+    def __init__(self, name, sticker, rarity_per_mille, rarity=None, **kwargs):
         self.name: str = name
         self.sticker: Sticker = sticker
         self.rarity_per_mille: int = rarity_per_mille
+        self.rarity: Optional[str] = rarity
 
     @classmethod
     def de_json(cls, json_string):
