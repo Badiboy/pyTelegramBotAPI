@@ -2905,9 +2905,14 @@ class KeyboardButton(Dictionaryable, JsonSerializable):
 
     Telegram Documentation: https://core.telegram.org/bots/api#keyboardbutton
 
-    :param text: Text of the button. If none of the optional fields are used, it will be sent as a message when the button is
-        pressed
+    :param text: Text of the button. If none of the fields other than text, icon_custom_emoji_id, and style are used,
+        it will be sent as a message when the button is pressed
     :type text: :obj:`str`
+
+    :param icon_custom_emoji_id: Optional. Unique identifier of the custom emoji shown before the text of the button.
+        Can only be used by bots that purchased additional usernames on Fragment or in the messages directly sent by the bot to private, group and supergroup chats
+        if the owner of the bot has a Telegram Premium subscription.
+    :type icon_custom_emoji_id: :obj:`str`
 
     :param request_contact: Optional. If True, the user's phone number will be sent as a contact when the button is
         pressed. Available in private chats only.
@@ -2942,7 +2947,8 @@ class KeyboardButton(Dictionaryable, JsonSerializable):
     def __init__(self, text: str, request_contact: Optional[bool]=None,
             request_location: Optional[bool]=None, request_poll: Optional[KeyboardButtonPollType]=None,
             web_app: Optional[WebAppInfo]=None, request_user: Optional[KeyboardButtonRequestUser]=None,
-            request_chat: Optional[KeyboardButtonRequestChat]=None, request_users: Optional[KeyboardButtonRequestUsers]=None):
+            request_chat: Optional[KeyboardButtonRequestChat]=None, request_users: Optional[KeyboardButtonRequestUsers]=None,
+            icon_custom_emoji_id: Optional[str]=None, **kwargs):
         self.text: str = text
         self.request_contact: Optional[bool] = request_contact
         self.request_location: Optional[bool] = request_location
@@ -2950,6 +2956,7 @@ class KeyboardButton(Dictionaryable, JsonSerializable):
         self.web_app: Optional[WebAppInfo] = web_app
         self.request_chat: Optional[KeyboardButtonRequestChat] = request_chat
         self.request_users: Optional[KeyboardButtonRequestUsers] = request_users
+        self.icon_custom_emoji_id: Optional[str] = icon_custom_emoji_id
         if request_user is not None:
             log_deprecation_warning('The parameter "request_user" is deprecated, use "request_users" instead')
             if self.request_users is None:
@@ -2974,6 +2981,8 @@ class KeyboardButton(Dictionaryable, JsonSerializable):
             json_dict['request_users'] = self.request_users.to_dict()
         if self.request_chat is not None:
             json_dict['request_chat'] = self.request_chat.to_dict()
+        if self.icon_custom_emoji_id is not None:
+            json_dict['icon_custom_emoji_id'] = self.icon_custom_emoji_id
         return json_dict
 
 
@@ -3097,6 +3106,11 @@ class InlineKeyboardButton(Dictionaryable, JsonSerializable, JsonDeserializable)
     :param text: Label text on the button
     :type text: :obj:`str`
 
+    :param icon_custom_emoji_id: Optional. Unique identifier of the custom emoji shown before the text of the button.
+        Can only be used by bots that purchased additional usernames on Fragment or in the messages directly sent by the bot to private,
+        group and supergroup chats if the owner of the bot has a Telegram Premium subscription.
+    :type icon_custom_emoji_id: :obj:`str`
+
     :param url: Optional. HTTP or tg:// URL to be opened when the button is pressed. Links tg://user?id=<user_id> can be
         used to mention a user by their ID without using a username, if this is allowed by their privacy settings.
     :type url: :obj:`str`
@@ -3162,7 +3176,7 @@ class InlineKeyboardButton(Dictionaryable, JsonSerializable, JsonDeserializable)
     def __init__(self, text: str, url: Optional[str]=None, callback_data: Optional[str]=None, web_app: Optional[WebAppInfo]=None,
             switch_inline_query: Optional[str]=None, switch_inline_query_current_chat: Optional[str]=None,
             switch_inline_query_chosen_chat: Optional[SwitchInlineQueryChosenChat]=None, callback_game=None, pay: Optional[bool]=None,
-            login_url: Optional[LoginUrl]=None, copy_text: Optional[CopyTextButton]=None, **kwargs):
+            login_url: Optional[LoginUrl]=None, copy_text: Optional[CopyTextButton]=None, icon_custom_emoji_id: Optional[str]=None, **kwargs):
         self.text: str = text
         self.url: Optional[str] = url
         self.callback_data: Optional[str] = callback_data
@@ -3174,6 +3188,7 @@ class InlineKeyboardButton(Dictionaryable, JsonSerializable, JsonDeserializable)
         self.pay: Optional[bool] = pay
         self.login_url: Optional[LoginUrl] = login_url
         self.copy_text: Optional[CopyTextButton] = copy_text
+        self.icon_custom_emoji_id: Optional[str] = icon_custom_emoji_id
 
     def to_json(self):
         return json.dumps(self.to_dict())
@@ -3200,6 +3215,8 @@ class InlineKeyboardButton(Dictionaryable, JsonSerializable, JsonDeserializable)
             json_dict['switch_inline_query_chosen_chat'] = self.switch_inline_query_chosen_chat.to_dict()
         if self.copy_text is not None:
             json_dict['copy_text'] = self.copy_text.to_dict()
+        if self.icon_custom_emoji_id is not None:
+            json_dict['icon_custom_emoji_id'] = self.icon_custom_emoji_id
         return json_dict
 
 
