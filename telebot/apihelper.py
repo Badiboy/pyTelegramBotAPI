@@ -1526,6 +1526,22 @@ def get_my_name(token, language_code=None):
         payload['language_code'] = language_code
     return _make_request(token, method_url, params=payload)
 
+def set_my_profile_photo(token, photo):
+    method_url = r'setMyProfilePhoto'
+    files = None
+    payload = {}
+    if util.is_string(photo):
+        payload['photo'] = photo
+    elif util.is_pil_image(photo):
+        files = {'photo': util.pil_image_to_file(photo)}
+    else:
+        files = {'photo': photo}
+    return _make_request(token, method_url, params=payload, files=files, method='post')
+
+def delete_my_profile_photo(token):
+    method_url = r'deleteMyProfilePhoto'
+    return _make_request(token, method_url, method='post')
+
 def set_chat_menu_button(token, chat_id=None, menu_button=None):
     method_url = r'setChatMenuButton'
     payload = {}

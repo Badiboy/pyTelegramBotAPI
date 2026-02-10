@@ -5048,6 +5048,31 @@ class TeleBot:
         return types.BotShortDescription.de_json(
             apihelper.get_my_short_description(self.token, language_code=language_code))
 
+    def set_my_profile_photo(self, photo: Any) -> bool:
+        """
+        Use this method to change the profile photo of the bot. Returns True on success.
+
+        Telegram documentation: https://core.telegram.org/bots/api#setmyprofilephoto
+
+        :param photo: New profile photo for the bot, uploaded using multipart/form-data
+        :type photo: :obj:`typing.Union[file_like, str]`
+
+        :return: True on success.
+        :rtype: :obj:`bool`
+        """
+        return apihelper.set_my_profile_photo(self.token, photo)
+
+    def remove_my_profile_photo(self) -> bool:
+        """
+        Use this method to remove the profile photo of the bot. Requires no parameters. Returns True on success.
+
+        Telegram documentation: https://core.telegram.org/bots/api#removemyprofilephoto
+
+        :return: True on success.
+        :rtype: :obj:`bool`
+        """
+        return apihelper.remove_my_profile_photo(self.token)
+
 
     def set_chat_menu_button(self, chat_id: Union[int, str]=None, menu_button: types.MenuButton=None) -> bool:
         """

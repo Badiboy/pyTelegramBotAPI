@@ -6533,6 +6533,31 @@ class AsyncTeleBot:
         result = await asyncio_helper.get_my_name(self.token, language_code)
         return types.BotName.de_json(result)
 
+    async def set_my_profile_photo(self, photo: Any) -> bool:
+        """
+        Use this method to change the profile photo of the bot. Returns True on success.
+
+        Telegram documentation: https://core.telegram.org/bots/api#setmyprofilephoto
+
+        :param photo: InputProfilePhoto: The new profile photo to set
+        :type photo: :obj:`typing.Union[file_like, str]`
+
+        :return: True on success.
+        :rtype: :obj:`bool`
+        """
+        return await asyncio_helper.set_my_profile_photo(self.token, photo)
+
+    async def remove_my_profile_photo(self) -> bool:
+        """
+        Use this method to remove the profile photo of the bot. Requires no parameters. Returns True on success.
+
+        Telegram documentation: https://core.telegram.org/bots/api#removemyprofilephoto
+
+        :return: True on success.
+        :rtype: :obj:`bool`
+        """
+        return await asyncio_helper.remove_my_profile_photo(self.token)
+
     async def set_chat_menu_button(self, chat_id: Union[int, str]=None,
                 menu_button: types.MenuButton=None) -> bool:
         """
