@@ -1512,6 +1512,29 @@ class TeleBot:
             apihelper.get_user_profile_photos(self.token, user_id, offset=offset, limit=limit)
         )
 
+    def get_user_profile_audios(self, user_id: int, offset: Optional[int]=None,
+            limit: Optional[int]=None) -> types.UserProfileAudios:
+        """
+        Use this method to get a list of profile audios for a user. Returns a :class:`telebot.types.UserProfileAudios` object.
+
+        Telegram documentation: https://core.telegram.org/bots/api#getuserprofileaudios
+
+        :param user_id: Unique identifier of the target user
+        :type user_id: :obj:`int`
+
+        :param offset: Sequential number of the first audio to be returned. By default, all audios are returned.
+        :type offset: :obj:`int`
+
+        :param limit: Limits the number of audios to be retrieved. Values between 1-100 are accepted. Defaults to 100.
+        :type limit: :obj:`int`
+
+        :return: If the request is successful, a UserProfileAudios object is returned.
+        :rtype: :class:`telebot.types.UserProfileAudios`
+        """
+        return types.UserProfileAudios.de_json(
+            apihelper.get_user_profile_audios(self.token, user_id, offset=offset, limit=limit)
+        )
+
     def set_user_emoji_status(self, user_id: int, emoji_status_custom_emoji_id: Optional[str]=None, emoji_status_expiration_date: Optional[int]=None) -> bool:
         """
         Changes the emoji status for a given user that previously allowed the bot to manage their emoji status via the Mini App method requestEmojiStatusAccess. Returns True on success.

@@ -330,6 +330,16 @@ async def get_user_profile_photos(token, user_id, offset=None, limit=None):
     return await _process_request(token, method_url, params=payload)
 
 
+async def get_user_profile_audios(token, user_id, offset=None, limit=None):
+    method_url = r'getUserProfileAudios'
+    payload = {'user_id': user_id}
+    if offset:
+        payload['offset'] = offset
+    if limit:
+        payload['limit'] = limit
+    return await _process_request(token, method_url, params=payload)
+
+
 async def set_user_emoji_status(token, user_id, emoji_status_custom_emoji_id=None, emoji_status_expiration_date=None):
     method_url = r'setUserEmojiStatus'
     payload = {'user_id': user_id}

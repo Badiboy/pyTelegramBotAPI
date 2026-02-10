@@ -13619,3 +13619,30 @@ class VideoQuality(JsonDeserializable):
         obj = cls.check_json(json_string)
         return cls(**obj)
     
+
+class UserProfileAudios(JsonDeserializable):
+    """
+    This object represents the audios displayed on a user's profile.
+
+    Telegram documentation: https://core.telegram.org/bots/api#userprofileaudios
+
+    :param total_count: Total number of profile audios for the target user
+    :type total_count: :obj:`int`
+
+    :param audios: Requested profile audios
+    :type audios: :obj:`list` of :class:`Audio`
+
+    :return: Instance of the class
+    :rtype: :class:`UserProfileAudios`
+    """
+    def __init__(self, total_count: int, audios: List[Audio], **kwargs):
+        self.total_count: int = total_count
+        self.audios: List[Audio] = audios
+
+    @classmethod
+    def de_json(cls, json_string):
+        if json_string is None: return None
+        obj = cls.check_json(json_string)
+        obj['audios'] = [Audio.de_json(audio) for audio in obj['audios']]
+        return cls(**obj)
+    
