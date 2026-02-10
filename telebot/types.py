@@ -760,6 +760,9 @@ class ChatFullInfo(JsonDeserializable):
 
     :param paid_message_star_count: Optional. The number of Telegram Stars a general user have to pay to send a message to the chat
     :type paid_message_star_count: :obj:`int`
+    
+    :param first_profile_audio: Optional. For private chats, the first audio added to the profile of the user
+    :type first_profile_audio: :class:`telebot.types.Audio`
 
     :param unique_gift_colors: Optional. The color scheme based on a unique gift that must be used for the chat's name, message replies and link previews
     :type unique_gift_colors: :class:`telebot.types.UniqueGiftColors`
@@ -799,6 +802,8 @@ class ChatFullInfo(JsonDeserializable):
             obj['rating'] = UserRating.de_json(obj['rating'])
         if 'unique_gift_colors' in obj:
             obj['unique_gift_colors'] = UniqueGiftColors.de_json(obj['unique_gift_colors'])
+        if 'first_profile_audio' in obj:
+            obj['first_profile_audio'] = Audio.de_json(obj['first_profile_audio'])
         return cls(**obj)
 
     def __init__(self, id, type, title=None, username=None, first_name=None,
@@ -816,7 +821,7 @@ class ChatFullInfo(JsonDeserializable):
                 business_opening_hours=None, personal_chat=None, birthdate=None,
                 can_send_paid_media=None,
                 accepted_gift_types=None, is_direct_messages=None, parent_chat=None, rating=None, paid_message_star_count=None,
-                unique_gift_colors=None, **kwargs):
+                unique_gift_colors=None, first_profile_audio=None, **kwargs):
         self.id: int = id
         self.type: str = type
         self.title: Optional[str] = title
@@ -867,6 +872,7 @@ class ChatFullInfo(JsonDeserializable):
         self.rating: Optional[UserRating] = rating
         self.paid_message_star_count: Optional[int] = paid_message_star_count
         self.unique_gift_colors: Optional[UniqueGiftColors] = unique_gift_colors
+        self.first_profile_audio: Optional[Audio] = first_profile_audio
 
 
     @property
@@ -2228,7 +2234,7 @@ class Video(JsonDeserializable):
         self.cover: Optional[List[PhotoSize]] = cover
         self.start_timestamp: Optional[int] = start_timestamp
         self.qualities: Optional[List[VideoQuality]] = qualities
-        
+
     @property
     def thumb(self) -> Optional[PhotoSize]:
         log_deprecation_warning('The parameter "thumb" is deprecated, use "thumbnail" instead')
