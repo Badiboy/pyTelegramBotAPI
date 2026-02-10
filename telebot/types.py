@@ -2185,6 +2185,9 @@ class Video(JsonDeserializable):
     :param start_timestamp: Optional. Timestamp in seconds from which the video will play in the message
     :type start_timestamp: :obj:`int`
 
+    :param qualities: Optional. List of available qualities of the video
+    :type qualities: List[:class:`telebot.types.VideoQuality`]
+
     :param file_name: Optional. Original filename as defined by sender
     :type file_name: :obj:`str`
 
@@ -2207,10 +2210,12 @@ class Video(JsonDeserializable):
             obj['thumbnail'] = PhotoSize.de_json(obj['thumbnail'])
         if 'cover' in obj:
             obj['cover'] = [PhotoSize.de_json(c) for c in obj['cover']]
+        if 'qualities' in obj:
+            obj['qualities'] = [VideoQuality.de_json(q) for q in obj['qualities']]
         return cls(**obj)
 
     def __init__(self, file_id, file_unique_id, width, height, duration, thumbnail=None, file_name=None, mime_type=None, file_size=None,
-                    cover=None, start_timestamp=None, **kwargs):
+                    cover=None, start_timestamp=None, qualities=None, **kwargs):
         self.file_id: str = file_id
         self.file_unique_id: str = file_unique_id
         self.width: int = width
@@ -2222,7 +2227,8 @@ class Video(JsonDeserializable):
         self.file_size: Optional[int] = file_size
         self.cover: Optional[List[PhotoSize]] = cover
         self.start_timestamp: Optional[int] = start_timestamp
-
+        self.qualities: Optional[List[VideoQuality]] = qualities
+        
     @property
     def thumb(self) -> Optional[PhotoSize]:
         log_deprecation_warning('The parameter "thumb" is deprecated, use "thumbnail" instead')
@@ -13563,5 +13569,47 @@ class ChatOwnerChanged(JsonDeserializable):
         if json_string is None: return None
         obj = cls.check_json(json_string)
         obj['new_owner'] = User.de_json(obj['new_owner'])
+        return cls(**obj)
+    
+class VideoQuality(JsonDeserializable):
+    """
+    This object represents a video file of a specific quality.
+
+    Telegram documentation: https://core.telegram.org/bots/api#videoquality
+
+    :param file_id: Identifier for this file, which can be used to download or reuse the file
+    :type file_id: :obj:`str`
+
+    :param file_unique_id: Unique identifier for this file, which is supposed to be the same over time and for different bots. Can't be used to download or reuse the file.
+    :type file_unique_id: :obj:`str`
+
+    :param width: Video width
+    :type width: :obj:`int`
+
+    :param height: Video height
+    :type height: :obj:`int`
+
+    :param codec: Codec that was used to encode the video, for example, “h264”, “h265”, or “av01”
+    :type codec: :obj:`str`
+
+    :param file_size: Optional. File size in bytes. It can be bigger than 2^31 and some programming languages may have difficulty/silent defects in interpreting it.
+        But it has at most 52 significant bits, so a signed 64-bit integer or double-precision float type are safe for storing this value.
+    :type file_size: :obj:`int`
+
+    :return: Instance of the class
+    :rtype: :class:`VideoQuality`
+    """
+    def __init__(self, file_id: str, file_unique_id: str, width: int, height: int, codec: str, file_size: Optional[int] = None, **kwargs):
+        self.file_id: str = file_id
+        self.file_unique_id: str = file_unique_id
+        self.width: int = width
+        self.height: int = height
+        self.codec: str = codec
+        self.file_size: Optional[int] = file_size
+
+    @classmethod
+    def de_json(cls, json_string):
+        if json_string is None: return None
+        obj = cls.check_json(json_string)
         return cls(**obj)
     
