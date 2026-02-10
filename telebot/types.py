@@ -515,6 +515,9 @@ class User(JsonDeserializable, Dictionaryable, JsonSerializable):
     :param has_topics_enabled: Optional. True, if the bot has forum topic mode enabled in private chats. Returned only in getMe.
     :type has_topics_enabled: :obj:`bool`
 
+    :param allows_users_to_create_topics: Optional. True, if the bot allows users to create and delete topics in private chats. Returned only in getMe.
+    :type allows_users_to_create_topics: :obj:`bool`
+
     :return: Instance of the class
     :rtype: :class:`telebot.types.User`
     """
@@ -528,7 +531,7 @@ class User(JsonDeserializable, Dictionaryable, JsonSerializable):
     def __init__(self, id, is_bot, first_name, last_name=None, username=None, language_code=None,
                  can_join_groups=None, can_read_all_group_messages=None, supports_inline_queries=None, 
                  is_premium=None, added_to_attachment_menu=None, can_connect_to_business=None, 
-                 has_main_web_app=None, has_topics_enabled=None, **kwargs):
+                 has_main_web_app=None, has_topics_enabled=None, allows_users_to_create_topics=None, **kwargs):
         self.id: int = id
         self.is_bot: bool = is_bot
         self.first_name: str = first_name
@@ -543,6 +546,7 @@ class User(JsonDeserializable, Dictionaryable, JsonSerializable):
         self.can_connect_to_business: Optional[bool] = can_connect_to_business
         self.has_main_web_app: Optional[bool] = has_main_web_app
         self.has_topics_enabled: Optional[bool] = has_topics_enabled
+        self.allows_users_to_create_topics: Optional[bool] = allows_users_to_create_topics
 
     @property
     def full_name(self) -> str:
@@ -570,7 +574,10 @@ class User(JsonDeserializable, Dictionaryable, JsonSerializable):
                 'is_premium': self.is_premium,
                 'added_to_attachment_menu': self.added_to_attachment_menu,
                 'can_connect_to_business': self.can_connect_to_business,
-                'has_main_web_app': self.has_main_web_app}
+                'has_main_web_app': self.has_main_web_app,
+                'has_topics_enabled': self.has_topics_enabled,
+                'allows_users_to_create_topics': self.allows_users_to_create_topics
+                }
 
 
 # noinspection PyShadowingBuiltins
