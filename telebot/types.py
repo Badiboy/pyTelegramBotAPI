@@ -1133,6 +1133,12 @@ class Message(JsonDeserializable):
         the bot itself)
     :type left_chat_member: :class:`telebot.types.User`
 
+    :param chat_owner_left: Optional. Service message: chat owner has left
+    :type chat_owner_left: :class:`telebot.types.ChatOwnerLeft`
+
+    :param chat_owner_changed: Optional. Service message: chat owner has changed
+    :type chat_owner_changed: :class:`telebot.types.ChatOwnerChanged`
+
     :param new_chat_title: Optional. A chat title was changed to this value
     :type new_chat_title: :obj:`str`
 
@@ -1584,6 +1590,12 @@ class Message(JsonDeserializable):
         if 'suggested_post_refunded' in obj:
             opts['suggested_post_refunded'] = SuggestedPostRefunded.de_json(obj['suggested_post_refunded'])
             content_type = 'suggested_post_refunded'
+        if 'chat_owner_changed' in obj:
+            opts['chat_owner_changed'] = ChatOwnerChanged.de_json(obj['chat_owner_changed'])
+            content_type = 'chat_owner_changed'
+        if 'chat_owner_left' in obj:
+            opts['chat_owner_left'] = ChatOwnerLeft.de_json(obj['chat_owner_left'])
+            content_type = 'chat_owner_left'
 
         return cls(message_id, from_user, date, chat, content_type, opts, json_string)
 
@@ -1720,6 +1732,8 @@ class Message(JsonDeserializable):
         self.suggested_post_declined: Optional[SuggestedPostDeclined] = None
         self.suggested_post_paid: Optional[SuggestedPostPaid] = None
         self.suggested_post_refunded: Optional[SuggestedPostRefunded] = None
+        self.chat_owner_left: Optional[ChatOwnerLeft] = None
+        self.chat_owner_changed: Optional[ChatOwnerChanged] = None
 
         for key in options:
             setattr(self, key, options[key])
@@ -13505,4 +13519,49 @@ class UserRating(JsonDeserializable):
         obj = cls.check_json(json_string)
         return cls(**obj)
     
+
+class ChatOwnerLeft(JsonDeserializable):
+    """
+    Describes a service message about the chat owner leaving the chat.
+
+    Telegram documentation: https://core.telegram.org/bots/api#chatownerleft
+
+    :param new_owner: Optional. The user which will be the new owner of the chat if the previous owner does not return to the chat
+    :type new_owner: :class:`User`
+
+    :return: Instance of the class
+    :rtype: :class:`ChatOwnerLeft`
+    """
+    def __init__(self, new_owner: Optional[User] = None, **kwargs):
+        self.new_owner: Optional[User] = new_owner
+        
+    @classmethod
+    def de_json(cls, json_string):
+        if json_string is None: return None
+        obj = cls.check_json(json_string)
+        if 'new_owner' in obj:
+            obj['new_owner'] = User.de_json(obj['new_owner'])
+        return cls(**obj)
+    
+class ChatOwnerChanged(JsonDeserializable):
+    """
+    Describes a service message about an ownership change in the chat.
+
+    Telegram documentation: https://core.telegram.org/bots/api#chatownerchanged
+
+    :param new_owner: The new owner of the chat
+    :type new_owner: :class:`User`
+
+    :return: Instance of the class
+    :rtype: :class:`ChatOwnerChanged`
+    """
+    def __init__(self, new_owner: User, **kwargs):
+        self.new_owner: User = new_owner
+
+    @classmethod
+    def de_json(cls, json_string):
+        if json_string is None: return None
+        obj = cls.check_json(json_string)
+        obj['new_owner'] = User.de_json(obj['new_owner'])
+        return cls(**obj)
     
