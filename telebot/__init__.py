@@ -5071,14 +5071,14 @@ class TeleBot:
         return types.BotShortDescription.de_json(
             apihelper.get_my_short_description(self.token, language_code=language_code))
 
-    def set_my_profile_photo(self, photo: Any) -> bool:
+    def set_my_profile_photo(self, photo: types.InputProfilePhoto) -> bool:
         """
         Use this method to change the profile photo of the bot. Returns True on success.
 
         Telegram documentation: https://core.telegram.org/bots/api#setmyprofilephoto
 
-        :param photo: New profile photo for the bot, uploaded using multipart/form-data
-        :type photo: :obj:`typing.Union[file_like, str]`
+        :param photo: The new profile photo to set
+        :type photo: :class:`telebot.types.InputProfilePhoto`
 
         :return: True on success.
         :rtype: :obj:`bool`
@@ -7806,7 +7806,7 @@ class TeleBot:
 
         :param sticker: File identifier of the sticker
         :return: On success, True is returned.
-        :rtype: :obj:`bool`
+    	:rtype: :obj:`bool`
         """
         return apihelper.delete_sticker_from_set(self.token, sticker)
 

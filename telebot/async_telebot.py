@@ -3007,7 +3007,7 @@ class AsyncTeleBot:
         :return: If successful, returns a UserProfileAudios object.
         :rtype: :class:`telebot.types.UserProfileAudios`
         """
-        return types.UserProfileAudios.de_json(await asyncio_helper.get_user_profile_audios(self.token, user_id, offset, limit))
+        return types.UserProfileAudios.de_json(await asyncio_helper.get_user_profile_audios(self.token, user_id, offset=offset, limit=limit))
 
     async def set_user_emoji_status(self, user_id: int, emoji_status_custom_emoji_id: Optional[str]=None, emoji_status_expiration_date: Optional[int]=None) -> bool:
         """
@@ -6553,14 +6553,14 @@ class AsyncTeleBot:
         result = await asyncio_helper.get_my_name(self.token, language_code)
         return types.BotName.de_json(result)
 
-    async def set_my_profile_photo(self, photo: Any) -> bool:
+    async def set_my_profile_photo(self, photo: types.InputProfilePhoto) -> bool:
         """
         Use this method to change the profile photo of the bot. Returns True on success.
 
         Telegram documentation: https://core.telegram.org/bots/api#setmyprofilephoto
 
         :param photo: InputProfilePhoto: The new profile photo to set
-        :type photo: :obj:`typing.Union[file_like, str]`
+        :type photo: :class:`telebot.types.InputProfilePhoto`
 
         :return: True on success.
         :rtype: :obj:`bool`
@@ -9238,8 +9238,8 @@ class AsyncTeleBot:
             chat_id: int, name: str, icon_color: Optional[int]=None,
             icon_custom_emoji_id: Optional[str]=None) -> types.ForumTopic:
         """
-        Use this method to create a topic in a forum supergroup chat. The bot must be an administrator
-        in the chat for this to work and must have the can_manage_topics administrator rights.
+        Use this method to create a topic in a forum supergroup chat or a private chat with a user. In the case of a supergroup chat the bot
+        must be an administrator in the chat for this to work and must have the can_manage_topics administrator right.
         Returns information about the created topic as a ForumTopic object.
 
         Telegram documentation: https://core.telegram.org/bots/api#createforumtopic
