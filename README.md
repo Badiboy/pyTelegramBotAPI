@@ -802,7 +802,7 @@ Bot instances that were idle for a long time might be rejected by the server whe
 
 Get help. Discuss. Chat.
 
-* Join the [pyTelegramBotAPI Telegram Chat Group](https://telegram.me/joinchat/Bn4ixj84FIZVkwhk2jag6A)
+* Join the [pyTelegramBotAPI Telegram Chat Group](https://t.me/+GNAFesxfJ-o5OTRl)
 	
 ## Telegram Channel
 
