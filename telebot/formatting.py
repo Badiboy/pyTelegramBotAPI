@@ -1071,6 +1071,12 @@ def apply_html_entities_coder(text: str, entities=None, custom_subs=None) -> str
     # Convert text to utf-16 encoding for proper handling
     utf16_text = text.encode("utf-16-le")
 
+    def escape_entity(text_part):
+        """Escape HTML special characters in a text part"""
+        if isinstance(text_part, bytes):
+            text_part = text_part.decode("utf-16-le")
+        return text_part.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+
     def format_entity(entity, content):
         """Apply entity formatting to the content"""
         entity_type = entity.type
@@ -1099,19 +1105,19 @@ def apply_html_entities_coder(text: str, entities=None, custom_subs=None) -> str
             end_pos = len(byte_text)
 
         if not entity_list or start_pos >= end_pos:
-            return escape_html(byte_text[start_pos:end_pos])
+            return escape_entity(byte_text[start_pos:end_pos])
 
         current_entity = entity_list[0]
         current_start = current_entity.offset * 2
         current_end = current_start + current_entity.length * 2
 
         if current_end <= start_pos or current_start >= end_pos:
-            return escape_html(byte_text[start_pos:end_pos])
+            return escape_entity(byte_text[start_pos:end_pos])
 
         result = []
 
         if current_start > start_pos:
-            result.append(escape_html(byte_text[start_pos:current_start]))
+            result.append(escape_entity(byte_text[start_pos:current_start]))
 
         nested_entities = []
         remaining_entities = []
@@ -1133,7 +1139,7 @@ def apply_html_entities_coder(text: str, entities=None, custom_subs=None) -> str
                 current_end
             )
         else:
-            inner_content = escape_html(byte_text[current_start:current_end])
+            inner_content = escape_entity(byte_text[current_start:current_end])
 
         result.append(format_entity(current_entity, inner_content))
 
@@ -1145,7 +1151,7 @@ def apply_html_entities_coder(text: str, entities=None, custom_subs=None) -> str
                 end_pos
             ))
         elif current_end < end_pos:
-            result.append(escape_html(byte_text[current_end:end_pos]))
+            result.append(escape_entity(byte_text[current_end:end_pos]))
 
         return "".join(result)
 
