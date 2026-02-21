@@ -278,7 +278,7 @@ def test_message_entity():
     sample_string_1 = r'{"update_id":934522126,"message":{"message_id":1374510,"from":{"id":927266710,"is_bot":false,"first_name":">_run","username":"coder2020","language_code":"en","is_premium":true},"chat":{"id":927266710,"first_name":">_run","username":"coder2020","type":"private"},"date":1682177590,"text":"b b b","entities":[{"offset":0,"length":2,"type":"bold"},{"offset":0,"length":1,"type":"italic"},{"offset":2,"length":2,"type":"bold"},{"offset":2,"length":1,"type":"italic"},{"offset":4,"length":1,"type":"bold"},{"offset":4,"length":1,"type":"italic"}]}}'
     update = types.Update.de_json(sample_string_1)
     message: types.Message = update.message
-    assert message.html_text == "<i><b>b </b></i><i><b>b </b></i><i><b>b</b></i>"
+    assert message.html_text == "<b><i>b</i> </b><b><i>b</i> </b><b><i>b</i></b>"
 
     sample_string_2 = r'{"update_id":934522166,"message":{"message_id":1374526,"from":{"id":927266710,"is_bot":false,"first_name":">_run","username":"coder2020","language_code":"en","is_premium":true},"chat":{"id":927266710,"first_name":">_run","username":"coder2020","type":"private"},"date":1682179716,"text":"b b b","entities":[{"offset":0,"length":1,"type":"bold"},{"offset":2,"length":1,"type":"bold"},{"offset":4,"length":1,"type":"italic"}]}}'
     message_2 = types.Update.de_json(sample_string_2).message
