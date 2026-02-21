@@ -381,7 +381,7 @@ def apply_html_entities(text: str, entities: Optional[List]=None, custom_subs: O
     if not entities:
         return text.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
 
-    _subs_c = {
+    _subs = {
         "bold": "<b>{text}</b>",
         "italic": "<i>{text}</i>",
         "pre": "<pre>{text}</pre>",
@@ -397,7 +397,7 @@ def apply_html_entities(text: str, entities: Optional[List]=None, custom_subs: O
 
     if custom_subs:
         for key, value in custom_subs.items():
-            _subs_c[key] = value
+            _subs[key] = value
 
     # Sort entities by offset (starting position), with longer entities first for equal offsets
     sorted_entities = sorted(entities, key=lambda e: (e.offset, -e.length))
@@ -427,8 +427,8 @@ def apply_html_entities(text: str, entities: Optional[List]=None, custom_subs: O
             return f"<tg-emoji emoji-id=\"{entity.custom_emoji_id}\">{content}</tg-emoji>"
         elif entity_type == "pre" and hasattr(entity, 'language') and entity.language:
             return f"<pre><code class=\"language-{entity.language}\">{content}</code></pre>"
-        elif entity_type in _subs_c:
-            template = _subs_c[entity_type]
+        elif entity_type in _subs:
+            template = _subs[entity_type]
             return template.format(text=content)
 
         # If no matching entity type, return text as is
