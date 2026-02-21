@@ -373,7 +373,7 @@ def hcite(content: str, escape: Optional[bool] = True, expandable: Optional[bool
     )
 
 
-def apply_html_entities(text: str, entities=None, custom_subs=None) -> str:
+def apply_html_entities(text: str, entities: Optional[List]=None, custom_subs: Optional[Dict[str, str]]=None) -> str:
     """
     Apply HTML formatting to text based on provided entities.
     Handles nested and overlapping entities correctly.
