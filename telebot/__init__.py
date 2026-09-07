@@ -282,6 +282,11 @@ class TeleBot:
                 'business_message': [],
                 'edited_business_message': [],
                 'deleted_business_messages': [],
+                'purchased_paid_media': [],
+                'managed_bot': [],
+                'guest_message': [],
+                'subscription': [],
+                'stopped_message_generation': [],
             }
             self.default_middleware_handlers = []
         if apihelper.ENABLE_MIDDLEWARE and use_class_middlewares:
