@@ -251,6 +251,7 @@ class TeleBot:
         self.managed_bot_handlers = []
         self.guest_message_handlers = []
         self.subscription_handlers = []
+        self.stopped_message_generation_handlers = []
 
         self.custom_filters = {}
         self.state_handlers = []
@@ -731,6 +732,7 @@ class TeleBot:
         new_managed_bots = None
         new_guest_messages = None
         new_subscriptions = None
+        new_stopped_message_generations = None
 
         for update in updates:
             if apihelper.ENABLE_MIDDLEWARE and not self.use_class_middlewares:
@@ -824,6 +826,9 @@ class TeleBot:
             if update.subscription:
                 if new_subscriptions is None: new_subscriptions = []
                 new_subscriptions.append(update.subscription)
+            if update.stopped_message_generation:
+                if new_stopped_message_generations is None: new_stopped_message_generations = []
+                new_stopped_message_generations.append(update.stopped_message_generation)
 
         if new_messages:
             self.process_new_messages(new_messages)
@@ -853,6 +858,8 @@ class TeleBot:
             self.process_new_chat_member(new_chat_members)
         if new_subscriptions:
             self.process_new_subscription(new_subscriptions)
+        if new_stopped_message_generations:
+            self.process_new_stopped_message_generation(new_stopped_message_generations)
         if new_chat_join_request:
             self.process_new_chat_join_request(new_chat_join_request)
         if new_message_reactions:
@@ -1036,6 +1043,16 @@ class TeleBot:
         :meta private:
         """
         self._notify_command_handlers(self.subscription_handlers, new_subscriptions, 'subscription')
+
+    def process_new_stopped_message_generation(self, new_stopped_message_generations):
+        """
+        :meta private:
+        """
+        self._notify_command_handlers(
+            self.stopped_message_generation_handlers,
+            new_stopped_message_generations,
+            'stopped_message_generation',
+        )
 
     def process_middlewares(self, update):
         """
@@ -11375,6 +11392,56 @@ class TeleBot:
         """
         handler_dict = self._build_handler_dict(callback, func=func, pass_bot=pass_bot, **kwargs)
         self.add_subscription_handler(handler_dict)
+
+    def stopped_message_generation_handler(self, func=None, **kwargs):
+        """
+        Handles updates about a user stopping message generation.
+
+        :param func: Function executed as a filter
+        :type func: :obj:`function`
+
+        :param kwargs: Optional keyword arguments(custom filters)
+        :return: None
+        """
+        def decorator(handler):
+            handler_dict = self._build_handler_dict(handler, func=func, **kwargs)
+            self.add_stopped_message_generation_handler(handler_dict)
+            return handler
+
+        return decorator
+
+    def add_stopped_message_generation_handler(self, handler_dict):
+        """
+        Adds a stopped_message_generation handler.
+        Note that you should use register_stopped_message_generation_handler to add a handler to the bot.
+
+        :meta private:
+
+        :param handler_dict:
+        :return:
+        """
+        self.stopped_message_generation_handlers.append(handler_dict)
+
+    def register_stopped_message_generation_handler(
+            self, callback: Callable, func: Optional[Callable]=None,
+            pass_bot: Optional[bool]=False, **kwargs):
+        """
+        Registers a stopped_message_generation handler.
+
+        :param callback: function to be called
+        :type callback: :obj:`function`
+
+        :param func: Function executed as a filter
+        :type func: :obj:`function`
+
+        :param pass_bot: True if you need to pass TeleBot instance to handler(useful for separating handlers into different files)
+        :type pass_bot: :obj:`bool`
+
+        :param kwargs: Optional keyword arguments(custom filters)
+        :return: None
+        """
+        handler_dict = self._build_handler_dict(callback, func=func, pass_bot=pass_bot, **kwargs)
+        self.add_stopped_message_generation_handler(handler_dict)
 
 
     def add_custom_filter(self, custom_filter: Union[SimpleCustomFilter, AdvancedCustomFilter]):
