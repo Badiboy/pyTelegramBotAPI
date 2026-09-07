@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import json
 import sys
 
 sys.path.append('../')
@@ -58,7 +59,7 @@ def test_api_103_new_optional_fields():
     inline_keyboard = types.InlineKeyboardMarkup(force_reply=True)
 
     assert table.to_dict()['is_compact'] is True
-    assert '"force_reply":true' in reply_keyboard.to_json()
+    assert json.loads(reply_keyboard.to_json())['force_reply'] is True
     assert inline_keyboard.to_dict()['force_reply'] is True
 
 
