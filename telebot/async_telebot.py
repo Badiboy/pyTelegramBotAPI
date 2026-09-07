@@ -3470,8 +3470,9 @@ class AsyncTeleBot:
             allow_paid_broadcast: Optional[bool]=None,
             direct_messages_topic_id: Optional[int]=None,
             suggested_post_parameters: Optional[types.SuggestedPostParameters]=None,
-            receiver_user_id: Optional[int]=None,
-            callback_query_id: Optional[str]=None) -> types.Message:
+            receiver_user_id: Optional[int]=None,          # deprecated, for backward compatibility
+            callback_query_id: Optional[str]=None,        # deprecated, for backward compatibility
+            ephemeral_message_parameters: Optional[types.EphemeralMessageParameters]=None) -> types.Message:
         """
         Use this method to send text messages.
 
@@ -3543,13 +3544,14 @@ class AsyncTeleBot:
             is automatically declined.
         :type suggested_post_parameters: :class:`telebot.types.SuggestedPostParameters`
 
-        :param receiver_user_id: For outgoing ephemeral messages, unique identifier of the user who will receive the message;
-            for group and supergroup chats only. It is not guaranteed that the user will receive the message, especially
-            if they are offline. See ephemeral message sending for more details.
+        :param receiver_user_id: Deprecated. Use ephemeral_message_parameters instead.
         :type receiver_user_id: :obj:`int`
 
-        :param callback_query_id: For outgoing ephemeral messages, identifier of the callback query which triggered the message if any
+        :param callback_query_id: Deprecated. Use ephemeral_message_parameters instead.
         :type callback_query_id: :obj:`str`
+
+        :param ephemeral_message_parameters: Parameters of the ephemeral message to send.
+        :type ephemeral_message_parameters: :class:`telebot.types.EphemeralMessageParameters`
 
         :return: On success, the sent Message is returned.
         :rtype: :class:`telebot.types.Message`
@@ -3601,6 +3603,10 @@ class AsyncTeleBot:
             # create a LinkPreviewOptions object
             link_preview_options = types.LinkPreviewOptions(is_disabled=self.disable_web_page_preview)
 
+        ephemeral_message_parameters = self._convert_deprecated_ephemeral_parameters(
+            receiver_user_id, callback_query_id, ephemeral_message_parameters
+        )
+
         return types.Message.de_json(
             await asyncio_helper.send_message(
                 self.token, chat_id, text,
@@ -3608,7 +3614,7 @@ class AsyncTeleBot:
                 entities, protect_content, message_thread_id, reply_parameters, link_preview_options, business_connection_id,
                 message_effect_id=message_effect_id, allow_paid_broadcast=allow_paid_broadcast,
                 direct_messages_topic_id=direct_messages_topic_id, suggested_post_parameters=suggested_post_parameters,
-                receiver_user_id=receiver_user_id, callback_query_id=callback_query_id
+                ephemeral_message_parameters=ephemeral_message_parameters
             )
         )
 
@@ -4247,8 +4253,9 @@ class AsyncTeleBot:
             allow_paid_broadcast: Optional[bool]=None,
             direct_messages_topic_id: Optional[int]=None,
             suggested_post_parameters: Optional[types.SuggestedPostParameters]=None,
-            receiver_user_id: Optional[int]=None,
-            callback_query_id: Optional[str]=None) -> types.Message:
+            receiver_user_id: Optional[int]=None,          # deprecated, for backward compatibility
+            callback_query_id: Optional[str]=None,        # deprecated, for backward compatibility
+            ephemeral_message_parameters: Optional[types.EphemeralMessageParameters]=None) -> types.Message:
         """
         Use this method to send photos. On success, the sent Message is returned.
 
@@ -4322,13 +4329,14 @@ class AsyncTeleBot:
             is automatically declined.
         :type suggested_post_parameters: :class:`telebot.types.SuggestedPostParameters`
 
-        :param receiver_user_id: For outgoing ephemeral messages, unique identifier of the user who will receive the message;
-            for group and supergroup chats only. It is not guaranteed that the user will receive the message, especially
-            if they are offline. See ephemeral message sending for more details.
+        :param receiver_user_id: Deprecated. Use ephemeral_message_parameters instead.
         :type receiver_user_id: :obj:`int`
 
-        :param callback_query_id: For outgoing ephemeral messages, identifier of the callback query which triggered the message if any
+        :param callback_query_id: Deprecated. Use ephemeral_message_parameters instead.
         :type callback_query_id: :obj:`str`
+
+        :param ephemeral_message_parameters: Parameters of the ephemeral message to send.
+        :type ephemeral_message_parameters: :class:`telebot.types.EphemeralMessageParameters`
 
         :return: On success, the sent Message is returned.
         :rtype: :class:`telebot.types.Message`
@@ -4358,6 +4366,10 @@ class AsyncTeleBot:
         if reply_parameters and (reply_parameters.allow_sending_without_reply is None):
             reply_parameters.allow_sending_without_reply = self.allow_sending_without_reply
 
+        ephemeral_message_parameters = self._convert_deprecated_ephemeral_parameters(
+            receiver_user_id, callback_query_id, ephemeral_message_parameters
+        )
+
         return types.Message.de_json(
             await asyncio_helper.send_photo(
                 self.token, chat_id, photo, caption, reply_markup,
@@ -4365,7 +4377,7 @@ class AsyncTeleBot:
                 protect_content, message_thread_id, has_spoiler, reply_parameters, business_connection_id, message_effect_id=message_effect_id,
                 show_caption_above_media=show_caption_above_media, allow_paid_broadcast=allow_paid_broadcast,
                 direct_messages_topic_id=direct_messages_topic_id, suggested_post_parameters=suggested_post_parameters,
-                receiver_user_id=receiver_user_id, callback_query_id=callback_query_id
+                ephemeral_message_parameters=ephemeral_message_parameters
             )
         )
 
@@ -4378,7 +4390,8 @@ class AsyncTeleBot:
             disable_notification: Optional[bool]=None, protect_content: Optional[bool]=None,
             allow_paid_broadcast: Optional[bool]=None, message_effect_id: Optional[str]=None,
             suggested_post_parameters: Optional[types.SuggestedPostParameters]=None, reply_parameters: Optional[types.ReplyParameters]=None,
-            reply_markup: Optional[REPLY_MARKUP_TYPES]=None) -> types.Message:
+            reply_markup: Optional[REPLY_MARKUP_TYPES]=None,
+            ephemeral_message_parameters: Optional[types.EphemeralMessageParameters]=None) -> types.Message:
         """
         Use this method to send live photos. On success, the sent Message is returned.
 
@@ -4442,6 +4455,9 @@ class AsyncTeleBot:
         :type reply_markup: :class:`telebot.types.InlineKeyboardMarkup` or :class:`telebot.types.ReplyKeyboardMarkup` or :class:`telebot.types.ReplyKeyboardRemove`
             or :class:`telebot.types.ForceReply`
 
+        :param ephemeral_message_parameters: Parameters of the ephemeral message to send
+        :type ephemeral_message_parameters: :class:`telebot.types.EphemeralMessageParameters`
+
         :return: On success, the sent Message is returned.
         :rtype: :class:`telebot.types.Message`
         """
@@ -4459,7 +4475,7 @@ class AsyncTeleBot:
                 has_spoiler=has_spoiler, disable_notification=disable_notification, protect_content=protect_content,
                 allow_paid_broadcast=allow_paid_broadcast, message_effect_id=message_effect_id,
                 suggested_post_parameters=suggested_post_parameters, reply_parameters=reply_parameters,
-                reply_markup=reply_markup
+                reply_markup=reply_markup, ephemeral_message_parameters=ephemeral_message_parameters
             )
         )
 
@@ -4484,8 +4500,9 @@ class AsyncTeleBot:
             allow_paid_broadcast: Optional[bool]=None,
             direct_messages_topic_id: Optional[int]=None,
             suggested_post_parameters: Optional[types.SuggestedPostParameters]=None,
-            receiver_user_id: Optional[int]=None,
-            callback_query_id: Optional[str]=None) -> types.Message:
+            receiver_user_id: Optional[int]=None,          # deprecated, for backward compatibility
+            callback_query_id: Optional[str]=None,        # deprecated, for backward compatibility
+            ephemeral_message_parameters: Optional[types.EphemeralMessageParameters]=None) -> types.Message:
         """
         Use this method to send audio files, if you want Telegram clients to display them in the music player.
         Your audio must be in the .MP3 or .M4A format. On success, the sent Message is returned. Bots can currently send audio files of up to 50 MB in size,
@@ -4574,13 +4591,14 @@ class AsyncTeleBot:
             is automatically declined.
         :type suggested_post_parameters: :class:`telebot.types.SuggestedPostParameters`
 
-        :param receiver_user_id: For outgoing ephemeral messages, unique identifier of the user who will receive the message;
-            for group and supergroup chats only. It is not guaranteed that the user will receive the message, especially
-            if they are offline. See ephemeral message sending for more details.
+        :param receiver_user_id: Deprecated. Use ephemeral_message_parameters instead.
         :type receiver_user_id: :obj:`int`
 
-        :param callback_query_id: For outgoing ephemeral messages, identifier of the callback query which triggered the message if any
+        :param callback_query_id: Deprecated. Use ephemeral_message_parameters instead.
         :type callback_query_id: :obj:`str`
+
+        :param ephemeral_message_parameters: Parameters of the ephemeral message to send.
+        :type ephemeral_message_parameters: :class:`telebot.types.EphemeralMessageParameters`
 
         :return: On success, the sent Message is returned.
         :rtype: :class:`telebot.types.Message`
@@ -4614,13 +4632,17 @@ class AsyncTeleBot:
         if reply_parameters and (reply_parameters.allow_sending_without_reply is None):
             reply_parameters.allow_sending_without_reply = self.allow_sending_without_reply
 
+        ephemeral_message_parameters = self._convert_deprecated_ephemeral_parameters(
+            receiver_user_id, callback_query_id, ephemeral_message_parameters
+        )
+
         return types.Message.de_json(
             await asyncio_helper.send_audio(
                 self.token, chat_id, audio, caption, duration, performer, title,
                 reply_markup, parse_mode, disable_notification, timeout, thumbnail,
                 caption_entities, protect_content, message_thread_id, reply_parameters, business_connection_id, message_effect_id=message_effect_id, allow_paid_broadcast=allow_paid_broadcast,
                 direct_messages_topic_id=direct_messages_topic_id, suggested_post_parameters=suggested_post_parameters,
-                receiver_user_id=receiver_user_id, callback_query_id=callback_query_id
+                ephemeral_message_parameters=ephemeral_message_parameters
             )
         )
 
@@ -4642,8 +4664,9 @@ class AsyncTeleBot:
             allow_paid_broadcast: Optional[bool]=None,
             direct_messages_topic_id: Optional[int]=None,
             suggested_post_parameters: Optional[types.SuggestedPostParameters]=None,
-            receiver_user_id: Optional[int]=None,
-            callback_query_id: Optional[str]=None) -> types.Message:
+            receiver_user_id: Optional[int]=None,          # deprecated, for backward compatibility
+            callback_query_id: Optional[str]=None,        # deprecated, for backward compatibility
+            ephemeral_message_parameters: Optional[types.EphemeralMessageParameters]=None) -> types.Message:
         """
         Use this method to send audio files, if you want Telegram clients to display the file as a playable voice message. For this to work, your audio must be in an .OGG file encoded with OPUS, or in .MP3 format, or in .M4A format (other formats may be sent as Audio or Document). On success, the sent Message is returned. Bots can currently send voice messages of up to 50 MB in size, this limit may be changed in the future.
 
@@ -4713,13 +4736,14 @@ class AsyncTeleBot:
             is automatically declined.
         :type suggested_post_parameters: :class:`telebot.types.SuggestedPostParameters`
 
-        :param receiver_user_id: For outgoing ephemeral messages, unique identifier of the user who will receive the message;
-            for group and supergroup chats only. It is not guaranteed that the user will receive the message, especially
-            if they are offline. See ephemeral message sending for more details.
+        :param receiver_user_id: Deprecated. Use ephemeral_message_parameters instead.
         :type receiver_user_id: :obj:`int`
 
-        :param callback_query_id: For outgoing ephemeral messages, identifier of the callback query which triggered the message if any
+        :param callback_query_id: Deprecated. Use ephemeral_message_parameters instead.
         :type callback_query_id: :obj:`str`
+
+        :param ephemeral_message_parameters: Parameters of the ephemeral message to send.
+        :type ephemeral_message_parameters: :class:`telebot.types.EphemeralMessageParameters`
 
         :return: On success, the sent Message is returned.
         :rtype: :class:`telebot.types.Message`
@@ -4749,13 +4773,17 @@ class AsyncTeleBot:
         if reply_parameters and (reply_parameters.allow_sending_without_reply is None):
             reply_parameters.allow_sending_without_reply = self.allow_sending_without_reply
 
+        ephemeral_message_parameters = self._convert_deprecated_ephemeral_parameters(
+            receiver_user_id, callback_query_id, ephemeral_message_parameters
+        )
+
         return types.Message.de_json(
             await asyncio_helper.send_voice(
                 self.token, chat_id, voice, caption, duration, reply_markup,
                 parse_mode, disable_notification, timeout, caption_entities,
                 protect_content, message_thread_id, reply_parameters, business_connection_id, message_effect_id=message_effect_id,
                 allow_paid_broadcast=allow_paid_broadcast, direct_messages_topic_id=direct_messages_topic_id, suggested_post_parameters=suggested_post_parameters,
-                receiver_user_id=receiver_user_id, callback_query_id=callback_query_id
+                ephemeral_message_parameters=ephemeral_message_parameters
             )
         )
 
@@ -4782,8 +4810,9 @@ class AsyncTeleBot:
             allow_paid_broadcast: Optional[bool]=None,
             direct_messages_topic_id: Optional[int]=None,
             suggested_post_parameters: Optional[types.SuggestedPostParameters]=None,
-            receiver_user_id: Optional[int]=None,
-            callback_query_id: Optional[str]=None) -> types.Message:
+            receiver_user_id: Optional[int]=None,          # deprecated, for backward compatibility
+            callback_query_id: Optional[str]=None,        # deprecated, for backward compatibility
+            ephemeral_message_parameters: Optional[types.EphemeralMessageParameters]=None) -> types.Message:
         """
         Use this method to send general files.
 
@@ -4865,13 +4894,14 @@ class AsyncTeleBot:
             is automatically declined.
         :type suggested_post_parameters: :class:`telebot.types.SuggestedPostParameters`
 
-        :param receiver_user_id: For outgoing ephemeral messages, unique identifier of the user who will receive the message;
-            for group and supergroup chats only. It is not guaranteed that the user will receive the message, especially
-            if they are offline. See ephemeral message sending for more details.
+        :param receiver_user_id: Deprecated. Use ephemeral_message_parameters instead.
         :type receiver_user_id: :obj:`int`
 
-        :param callback_query_id: For outgoing ephemeral messages, identifier of the callback query which triggered the message if any
+        :param callback_query_id: Deprecated. Use ephemeral_message_parameters instead.
         :type callback_query_id: :obj:`str`
+
+        :param ephemeral_message_parameters: Parameters of the ephemeral message to send.
+        :type ephemeral_message_parameters: :class:`telebot.types.EphemeralMessageParameters`
 
         :return: On success, the sent Message is returned.
         :rtype: :class:`telebot.types.Message`
@@ -4914,6 +4944,10 @@ class AsyncTeleBot:
             # inputfile name ignored, warn
             logger.warning('Cannot use both InputFile and visible_file_name. InputFile name will be ignored.')
 
+        ephemeral_message_parameters = self._convert_deprecated_ephemeral_parameters(
+            receiver_user_id, callback_query_id, ephemeral_message_parameters
+        )
+
         return types.Message.de_json(
             await asyncio_helper.send_data(
                 self.token, chat_id, document, 'document',
@@ -4923,7 +4957,7 @@ class AsyncTeleBot:
                 disable_content_type_detection = disable_content_type_detection, visible_file_name = visible_file_name, protect_content = protect_content,
                 message_thread_id = message_thread_id, reply_parameters=reply_parameters, business_connection_id=business_connection_id, message_effect_id=message_effect_id, allow_paid_broadcast=allow_paid_broadcast,
                 direct_messages_topic_id=direct_messages_topic_id, suggested_post_parameters=suggested_post_parameters,
-                receiver_user_id=receiver_user_id, callback_query_id=callback_query_id
+                ephemeral_message_parameters=ephemeral_message_parameters
             )
         )
 
@@ -4944,8 +4978,9 @@ class AsyncTeleBot:
             allow_paid_broadcast: Optional[bool]=None,
             direct_messages_topic_id: Optional[int]=None,
             suggested_post_parameters: Optional[types.SuggestedPostParameters]=None,
-            receiver_user_id: Optional[int]=None,
-            callback_query_id: Optional[str]=None) -> types.Message:
+            receiver_user_id: Optional[int]=None,          # deprecated, for backward compatibility
+            callback_query_id: Optional[str]=None,        # deprecated, for backward compatibility
+            ephemeral_message_parameters: Optional[types.EphemeralMessageParameters]=None) -> types.Message:
         """
         Use this method to send static .WEBP, animated .TGS, or video .WEBM stickers.
         On success, the sent Message is returned.
@@ -5010,13 +5045,14 @@ class AsyncTeleBot:
             is automatically declined.
         :type suggested_post_parameters: :class:`telebot.types.SuggestedPostParameters`
 
-        :param receiver_user_id: For outgoing ephemeral messages, unique identifier of the user who will receive the message;
-            for group and supergroup chats only. It is not guaranteed that the user will receive the message, especially
-            if they are offline. See ephemeral message sending for more details.
+        :param receiver_user_id: Deprecated. Use ephemeral_message_parameters instead.
         :type receiver_user_id: :obj:`int`
 
-        :param callback_query_id: For outgoing ephemeral messages, identifier of the callback query which triggered the message if any
+        :param callback_query_id: Deprecated. Use ephemeral_message_parameters instead.
         :type callback_query_id: :obj:`str`
+
+        :param ephemeral_message_parameters: Parameters of the ephemeral message to send.
+        :type ephemeral_message_parameters: :class:`telebot.types.EphemeralMessageParameters`
 
         :return: On success, the sent Message is returned.
         :rtype: :class:`telebot.types.Message`
@@ -5050,6 +5086,10 @@ class AsyncTeleBot:
         if reply_parameters and (reply_parameters.allow_sending_without_reply is None):
             reply_parameters.allow_sending_without_reply = self.allow_sending_without_reply
 
+        ephemeral_message_parameters = self._convert_deprecated_ephemeral_parameters(
+            receiver_user_id, callback_query_id, ephemeral_message_parameters
+        )
+
         return types.Message.de_json(
             await asyncio_helper.send_data(
                 self.token, chat_id, sticker, 'sticker',
@@ -5057,7 +5097,7 @@ class AsyncTeleBot:
                 disable_notification=disable_notification, timeout=timeout,
                 protect_content=protect_content,
                 message_thread_id=message_thread_id, emoji=emoji, reply_parameters=reply_parameters, business_connection_id=business_connection_id, message_effect_id=message_effect_id, allow_paid_broadcast=allow_paid_broadcast,
-                suggested_post_parameters=suggested_post_parameters, direct_messages_topic_id=direct_messages_topic_id,receiver_user_id=receiver_user_id, callback_query_id=callback_query_id
+                suggested_post_parameters=suggested_post_parameters, direct_messages_topic_id=direct_messages_topic_id,ephemeral_message_parameters=ephemeral_message_parameters
             )
         )
 
@@ -5090,8 +5130,9 @@ class AsyncTeleBot:
             start_timestamp: Optional[int]=None,
             direct_messages_topic_id: Optional[int]=None,
             suggested_post_parameters: Optional[types.SuggestedPostParameters]=None,
-            receiver_user_id: Optional[int]=None,
-            callback_query_id: Optional[str]=None) -> types.Message:
+            receiver_user_id: Optional[int]=None,          # deprecated, for backward compatibility
+            callback_query_id: Optional[str]=None,        # deprecated, for backward compatibility
+            ephemeral_message_parameters: Optional[types.EphemeralMessageParameters]=None) -> types.Message:
         """
         Use this method to send video files, Telegram clients support mp4 videos (other formats may be sent as Document).
 
@@ -5191,13 +5232,14 @@ class AsyncTeleBot:
             is automatically declined.
         :type suggested_post_parameters: :class:`telebot.types.SuggestedPostParameters`
 
-        :param receiver_user_id: For outgoing ephemeral messages, unique identifier of the user who will receive the message;
-            for group and supergroup chats only. It is not guaranteed that the user will receive the message, especially
-            if they are offline. See ephemeral message sending for more details.
+        :param receiver_user_id: Deprecated. Use ephemeral_message_parameters instead.
         :type receiver_user_id: :obj:`int`
 
-        :param callback_query_id: For outgoing ephemeral messages, identifier of the callback query which triggered the message if any
+        :param callback_query_id: Deprecated. Use ephemeral_message_parameters instead.
         :type callback_query_id: :obj:`str`
+
+        :param ephemeral_message_parameters: Parameters of the ephemeral message to send.
+        :type ephemeral_message_parameters: :class:`telebot.types.EphemeralMessageParameters`
 
         :return: On success, the sent Message is returned.
         :rtype: :class:`telebot.types.Message`
@@ -5236,6 +5278,10 @@ class AsyncTeleBot:
             logger.warning('The parameter "thumb" is deprecated. Use "thumbnail" instead.')
             thumbnail = thumb
 
+        ephemeral_message_parameters = self._convert_deprecated_ephemeral_parameters(
+            receiver_user_id, callback_query_id, ephemeral_message_parameters
+        )
+
         return types.Message.de_json(
             await asyncio_helper.send_video(
                 self.token, chat_id, video, duration, caption, reply_markup,
@@ -5243,7 +5289,7 @@ class AsyncTeleBot:
                 caption_entities, protect_content, message_thread_id, has_spoiler, reply_parameters, business_connection_id, message_effect_id=message_effect_id,
                 show_caption_above_media=show_caption_above_media, allow_paid_broadcast=allow_paid_broadcast, cover=cover, start_timestamp=start_timestamp,
                 direct_messages_topic_id=direct_messages_topic_id, suggested_post_parameters=suggested_post_parameters,
-                receiver_user_id=receiver_user_id, callback_query_id=callback_query_id))
+                ephemeral_message_parameters=ephemeral_message_parameters))
 
     async def send_animation(
             self, chat_id: Union[int, str], animation: Union[Any, str],
@@ -5270,8 +5316,9 @@ class AsyncTeleBot:
             allow_paid_broadcast: Optional[bool]=None,
             direct_messages_topic_id: Optional[int]=None,
             suggested_post_parameters: Optional[types.SuggestedPostParameters]=None,
-            receiver_user_id: Optional[int]=None,
-            callback_query_id: Optional[str]=None) -> types.Message:
+            receiver_user_id: Optional[int]=None,          # deprecated, for backward compatibility
+            callback_query_id: Optional[str]=None,        # deprecated, for backward compatibility
+            ephemeral_message_parameters: Optional[types.EphemeralMessageParameters]=None) -> types.Message:
         """
         Use this method to send animation files (GIF or H.264/MPEG-4 AVC video without sound).
         On success, the sent Message is returned. Bots can currently send animation files of up to 50 MB in size, this limit may be changed in the future.
@@ -5363,13 +5410,14 @@ class AsyncTeleBot:
             is automatically declined.
         :type suggested_post_parameters: :class:`telebot.types.SuggestedPostParameters`
 
-        :param receiver_user_id: For outgoing ephemeral messages, unique identifier of the user who will receive the message;
-            for group and supergroup chats only. It is not guaranteed that the user will receive the message, especially
-            if they are offline. See ephemeral message sending for more details.
+        :param receiver_user_id: Deprecated. Use ephemeral_message_parameters instead.
         :type receiver_user_id: :obj:`int`
 
-        :param callback_query_id: For outgoing ephemeral messages, identifier of the callback query which triggered the message if any
+        :param callback_query_id: Deprecated. Use ephemeral_message_parameters instead.
         :type callback_query_id: :obj:`str`
+
+        :param ephemeral_message_parameters: Parameters of the ephemeral message to send.
+        :type ephemeral_message_parameters: :class:`telebot.types.EphemeralMessageParameters`
 
         :return: On success, the sent Message is returned.
         :rtype: :class:`telebot.types.Message`
@@ -5403,6 +5451,10 @@ class AsyncTeleBot:
             thumbnail = thumb
             logger.warning('The parameter "thumb" is deprecated. Use "thumbnail" instead.')
 
+        ephemeral_message_parameters = self._convert_deprecated_ephemeral_parameters(
+            receiver_user_id, callback_query_id, ephemeral_message_parameters
+        )
+
         return types.Message.de_json(
             await asyncio_helper.send_animation(
                 self.token, chat_id, animation, duration, caption,
@@ -5410,7 +5462,7 @@ class AsyncTeleBot:
                 caption_entities, width, height, protect_content, message_thread_id, has_spoiler, reply_parameters, business_connection_id,
                 message_effect_id=message_effect_id, show_caption_above_media=show_caption_above_media, allow_paid_broadcast=allow_paid_broadcast,
                 direct_messages_topic_id=direct_messages_topic_id, suggested_post_parameters=suggested_post_parameters,
-                receiver_user_id=receiver_user_id, callback_query_id=callback_query_id
+                ephemeral_message_parameters=ephemeral_message_parameters
             )
         )
 
@@ -5433,8 +5485,9 @@ class AsyncTeleBot:
             allow_paid_broadcast: Optional[bool]=None,
             direct_messages_topic_id: Optional[int]=None,
             suggested_post_parameters: Optional[types.SuggestedPostParameters]=None,
-            receiver_user_id: Optional[int]=None,
-            callback_query_id: Optional[str]=None) -> types.Message:
+            receiver_user_id: Optional[int]=None,          # deprecated, for backward compatibility
+            callback_query_id: Optional[str]=None,        # deprecated, for backward compatibility
+            ephemeral_message_parameters: Optional[types.EphemeralMessageParameters]=None) -> types.Message:
         """
         As of v.4.0, Telegram clients support rounded square MPEG4 videos of up to 1 minute long.
         Use this method to send video messages. On success, the sent Message is returned.
@@ -5508,13 +5561,14 @@ class AsyncTeleBot:
             is automatically declined.
         :type suggested_post_parameters: :class:`telebot.types.SuggestedPostParameters`
 
-        :param receiver_user_id: For outgoing ephemeral messages, unique identifier of the user who will receive the message;
-            for group and supergroup chats only. It is not guaranteed that the user will receive the message, especially
-            if they are offline. See ephemeral message sending for more details.
+        :param receiver_user_id: Deprecated. Use ephemeral_message_parameters instead.
         :type receiver_user_id: :obj:`int`
 
-        :param callback_query_id: For outgoing ephemeral messages, identifier of the callback query which triggered the message if any
+        :param callback_query_id: Deprecated. Use ephemeral_message_parameters instead.
         :type callback_query_id: :obj:`str`
+
+        :param ephemeral_message_parameters: Parameters of the ephemeral message to send.
+        :type ephemeral_message_parameters: :class:`telebot.types.EphemeralMessageParameters`
 
         :return: On success, the sent Message is returned.
         :rtype: :class:`telebot.types.Message`
@@ -5547,12 +5601,16 @@ class AsyncTeleBot:
             thumbnail = thumb
             logger.warning('The parameter "thumb" is deprecated. Use "thumbnail" instead.')
 
+        ephemeral_message_parameters = self._convert_deprecated_ephemeral_parameters(
+            receiver_user_id, callback_query_id, ephemeral_message_parameters
+        )
+
         return types.Message.de_json(
             await asyncio_helper.send_video_note(
                 self.token, chat_id, data, duration, length, reply_markup,
                 disable_notification, timeout, thumbnail, protect_content, message_thread_id, reply_parameters, business_connection_id, message_effect_id=message_effect_id,
                 allow_paid_broadcast=allow_paid_broadcast, direct_messages_topic_id=direct_messages_topic_id,
-                suggested_post_parameters=suggested_post_parameters,receiver_user_id=receiver_user_id, callback_query_id=callback_query_id
+                suggested_post_parameters=suggested_post_parameters,ephemeral_message_parameters=ephemeral_message_parameters
             )
         )
 
@@ -5757,8 +5815,9 @@ class AsyncTeleBot:
             allow_paid_broadcast: Optional[bool]=None,
             direct_messages_topic_id: Optional[int]=None,
             suggested_post_parameters: Optional[types.SuggestedPostParameters]=None,
-            receiver_user_id: Optional[int]=None,
-            callback_query_id: Optional[str]=None) -> types.Message:
+            receiver_user_id: Optional[int]=None,          # deprecated, for backward compatibility
+            callback_query_id: Optional[str]=None,        # deprecated, for backward compatibility
+            ephemeral_message_parameters: Optional[types.EphemeralMessageParameters]=None) -> types.Message:
         """
         Use this method to send point on the map. On success, the sent Message is returned.
 
@@ -5830,13 +5889,14 @@ class AsyncTeleBot:
             is automatically declined.
         :type suggested_post_parameters: :class:`telebot.types.SuggestedPostParameters`
 
-        :param receiver_user_id: For outgoing ephemeral messages, unique identifier of the user who will receive the message;
-            for group and supergroup chats only. It is not guaranteed that the user will receive the message, especially
-            if they are offline. See ephemeral message sending for more details.
+        :param receiver_user_id: Deprecated. Use ephemeral_message_parameters instead.
         :type receiver_user_id: :obj:`int`
 
-        :param callback_query_id: For outgoing ephemeral messages, identifier of the callback query which triggered the message if any
+        :param callback_query_id: Deprecated. Use ephemeral_message_parameters instead.
         :type callback_query_id: :obj:`str`
+
+        :param ephemeral_message_parameters: Parameters of the ephemeral message to send.
+        :type ephemeral_message_parameters: :class:`telebot.types.EphemeralMessageParameters`
 
         :return: On success, the sent Message is returned.
         :rtype: :class:`telebot.types.Message`
@@ -5865,13 +5925,17 @@ class AsyncTeleBot:
         if reply_parameters and (reply_parameters.allow_sending_without_reply is None):
             reply_parameters.allow_sending_without_reply = self.allow_sending_without_reply
 
+        ephemeral_message_parameters = self._convert_deprecated_ephemeral_parameters(
+            receiver_user_id, callback_query_id, ephemeral_message_parameters
+        )
+
         return types.Message.de_json(
             await asyncio_helper.send_location(
                 self.token, chat_id, latitude, longitude, live_period, 
                 reply_markup, disable_notification, timeout, 
                 horizontal_accuracy, heading, proximity_alert_radius, 
                 protect_content, message_thread_id, reply_parameters, business_connection_id, message_effect_id=message_effect_id, allow_paid_broadcast=allow_paid_broadcast,
-                direct_messages_topic_id=direct_messages_topic_id, suggested_post_parameters=suggested_post_parameters,receiver_user_id=receiver_user_id, callback_query_id=callback_query_id
+                direct_messages_topic_id=direct_messages_topic_id, suggested_post_parameters=suggested_post_parameters,ephemeral_message_parameters=ephemeral_message_parameters
             )
         )
 
@@ -6002,8 +6066,9 @@ class AsyncTeleBot:
             allow_paid_broadcast: Optional[bool]=None,
             direct_messages_topic_id: Optional[int]=None,
             suggested_post_parameters: Optional[types.SuggestedPostParameters]=None,
-            receiver_user_id: Optional[int]=None,
-            callback_query_id: Optional[str]=None) -> types.Message:
+            receiver_user_id: Optional[int]=None,          # deprecated, for backward compatibility
+            callback_query_id: Optional[str]=None,        # deprecated, for backward compatibility
+            ephemeral_message_parameters: Optional[types.EphemeralMessageParameters]=None) -> types.Message:
         """
         Use this method to send information about a venue. On success, the sent Message is returned.
 
@@ -6083,13 +6148,14 @@ class AsyncTeleBot:
             is automatically declined.
         :type suggested_post_parameters: :class:`telebot.types.SuggestedPostParameters`
 
-        :param receiver_user_id: For outgoing ephemeral messages, unique identifier of the user who will receive the message;
-            for group and supergroup chats only. It is not guaranteed that the user will receive the message, especially
-            if they are offline. See ephemeral message sending for more details.
+        :param receiver_user_id: Deprecated. Use ephemeral_message_parameters instead.
         :type receiver_user_id: :obj:`int`
 
-        :param callback_query_id: For outgoing ephemeral messages, identifier of the callback query which triggered the message if any
+        :param callback_query_id: Deprecated. Use ephemeral_message_parameters instead.
         :type callback_query_id: :obj:`str`
+
+        :param ephemeral_message_parameters: Parameters of the ephemeral message to send.
+        :type ephemeral_message_parameters: :class:`telebot.types.EphemeralMessageParameters`
 
         :return: On success, the sent Message is returned.
         :rtype: :class:`telebot.types.Message`
@@ -6118,13 +6184,17 @@ class AsyncTeleBot:
         if reply_parameters and (reply_parameters.allow_sending_without_reply is None):
             reply_parameters.allow_sending_without_reply = self.allow_sending_without_reply
 
+        ephemeral_message_parameters = self._convert_deprecated_ephemeral_parameters(
+            receiver_user_id, callback_query_id, ephemeral_message_parameters
+        )
+
         return types.Message.de_json(
             await asyncio_helper.send_venue(
                 self.token, chat_id, latitude, longitude, title, address, foursquare_id, foursquare_type,
                 disable_notification, reply_markup, timeout,
                 google_place_id, google_place_type, protect_content, message_thread_id, reply_parameters, business_connection_id, message_effect_id=message_effect_id,
                 allow_paid_broadcast=allow_paid_broadcast, direct_messages_topic_id=direct_messages_topic_id, suggested_post_parameters=suggested_post_parameters,
-                receiver_user_id=receiver_user_id, callback_query_id=callback_query_id
+                ephemeral_message_parameters=ephemeral_message_parameters
             )
         )
 
@@ -6145,8 +6215,9 @@ class AsyncTeleBot:
             allow_paid_broadcast: Optional[bool]=None,
             direct_messages_topic_id: Optional[int]=None,
             suggested_post_parameters: Optional[types.SuggestedPostParameters]=None,
-            receiver_user_id: Optional[int]=None,
-            callback_query_id: Optional[str]=None) -> types.Message:
+            receiver_user_id: Optional[int]=None,          # deprecated, for backward compatibility
+            callback_query_id: Optional[str]=None,        # deprecated, for backward compatibility
+            ephemeral_message_parameters: Optional[types.EphemeralMessageParameters]=None) -> types.Message:
         """
         Use this method to send phone contacts. On success, the sent Message is returned.
 
@@ -6213,13 +6284,14 @@ class AsyncTeleBot:
             is automatically declined.
         :type suggested_post_parameters: :class:`telebot.types.SuggestedPostParameters`
 
-        :param receiver_user_id: For outgoing ephemeral messages, unique identifier of the user who will receive the message;
-            for group and supergroup chats only. It is not guaranteed that the user will receive the message, especially
-            if they are offline. See ephemeral message sending for more details.
+        :param receiver_user_id: Deprecated. Use ephemeral_message_parameters instead.
         :type receiver_user_id: :obj:`int`
 
-        :param callback_query_id: For outgoing ephemeral messages, identifier of the callback query which triggered the message if any
+        :param callback_query_id: Deprecated. Use ephemeral_message_parameters instead.
         :type callback_query_id: :obj:`str`
+
+        :param ephemeral_message_parameters: Parameters of the ephemeral message to send.
+        :type ephemeral_message_parameters: :class:`telebot.types.EphemeralMessageParameters`
 
         :return: On success, the sent Message is returned.
         :rtype: :class:`telebot.types.Message`
@@ -6248,6 +6320,10 @@ class AsyncTeleBot:
         if reply_parameters and (reply_parameters.allow_sending_without_reply is None):
             reply_parameters.allow_sending_without_reply = self.allow_sending_without_reply
 
+        ephemeral_message_parameters = self._convert_deprecated_ephemeral_parameters(
+            receiver_user_id, callback_query_id, ephemeral_message_parameters
+        )
+
         return types.Message.de_json(
             await asyncio_helper.send_contact(
                 self.token, chat_id, phone_number, first_name, last_name, vcard,
@@ -6255,7 +6331,7 @@ class AsyncTeleBot:
                 protect_content, message_thread_id, reply_parameters, business_connection_id,
                 message_effect_id=message_effect_id, allow_paid_broadcast=allow_paid_broadcast,
                 direct_messages_topic_id=direct_messages_topic_id, suggested_post_parameters=suggested_post_parameters,
-                receiver_user_id=receiver_user_id, callback_query_id=callback_query_id
+                ephemeral_message_parameters=ephemeral_message_parameters
             )
         )
     
@@ -6271,7 +6347,8 @@ class AsyncTeleBot:
             message_effect_id: Optional[str]=None,
             suggested_post_parameters: Optional[types.SuggestedPostParameters]=None,
             reply_parameters: Optional[types.ReplyParameters]=None,
-            reply_markup: Optional[REPLY_MARKUP_TYPES]=None) -> types.Message:
+            reply_markup: Optional[REPLY_MARKUP_TYPES]=None,
+            ephemeral_message_parameters: Optional[types.EphemeralMessageParameters]=None) -> types.Message:
         """
         Use this method to send rich messages. If the message contains a block with a media element then
         the bot must have the right to send the media to the chat. On success, the sent Message is returned.
@@ -6322,6 +6399,9 @@ class AsyncTeleBot:
         :type reply_markup: :class:`telebot.types.InlineKeyboardMarkup` or :class:`telebot.types.ReplyKeyboardMarkup` or :class:`telebot.types.ReplyKeyboardRemove`
             or :class:`telebot.types.ForceReply`
 
+        :param ephemeral_message_parameters: Parameters of the ephemeral message to send
+        :type ephemeral_message_parameters: :class:`telebot.types.EphemeralMessageParameters`
+
         :return: On success, the sent Message is returned.
         :rtype: :class:`telebot.types.Message`
         """
@@ -6331,8 +6411,9 @@ class AsyncTeleBot:
         return types.Message.de_json(
             await asyncio_helper.send_rich_message(
                 self.token, chat_id, rich_message, business_connection_id=business_connection_id, message_thread_id=message_thread_id, direct_messages_topic_id=direct_messages_topic_id,
-                disable_notification=disable_notification, protect_content=protect_content, allow_paid_broadcast=allow_paid_broadcast, message_effect_id=message_effect_id, suggested_post_parameters=suggested_post_parameters
-                , reply_parameters=reply_parameters, reply_markup=reply_markup)
+                disable_notification=disable_notification, protect_content=protect_content, allow_paid_broadcast=allow_paid_broadcast, message_effect_id=message_effect_id, suggested_post_parameters=suggested_post_parameters,
+                reply_parameters=reply_parameters, reply_markup=reply_markup,
+                ephemeral_message_parameters=ephemeral_message_parameters)
         )
 
     async def send_rich_message_draft(
@@ -6613,6 +6694,7 @@ class AsyncTeleBot:
             can_post_stories: Optional[bool]=None,
             can_edit_stories: Optional[bool]=None,
             can_delete_stories: Optional[bool]=None,
+            can_send_welcome_messages: Optional[bool]=None,
             can_manage_direct_messages: Optional[bool]=None,
             can_manage_tags: Optional[bool]=None) -> bool:
         """
@@ -6706,6 +6788,7 @@ class AsyncTeleBot:
             can_restrict_members, can_pin_messages, can_promote_members,
             is_anonymous, can_manage_chat, can_manage_video_chats, can_manage_topics,
             can_post_stories, can_edit_stories, can_delete_stories,
+            can_send_welcome_messages=can_send_welcome_messages,
             can_manage_direct_messages=can_manage_direct_messages, can_manage_tags=can_manage_tags
         )
 
@@ -8492,8 +8575,9 @@ class AsyncTeleBot:
         return types.Poll.de_json(await asyncio_helper.stop_poll(self.token, chat_id, message_id, reply_markup, business_connection_id))
     
     async def edit_ephemeral_message_text(
-            self, chat_id: Union[int, str], receiver_user_id: int, ephemeral_message_id: int, text: str,
+            self, chat_id: Union[int, str], receiver_user_id: int, ephemeral_message_id: int, text: Optional[str]=None,
             parse_mode: Optional[str]=None, entities: Optional[List[types.MessageEntity]]=None,
+            rich_message: Optional[types.InputRichMessage]=None,
             link_preview_options: Optional[types.LinkPreviewOptions]=None, reply_markup: Optional[types.InlineKeyboardMarkup]=None) -> bool:
         """
         Use this method to edit an ephemeral text message. Note that it is not guaranteed that the
@@ -8532,7 +8616,7 @@ class AsyncTeleBot:
 
         return await asyncio_helper.edit_ephemeral_message_text(
             self.token, chat_id, receiver_user_id, ephemeral_message_id, text,
-            parse_mode=parse_mode, entities=entities,
+            parse_mode=parse_mode, entities=entities, rich_message=rich_message,
             link_preview_options=link_preview_options, reply_markup=reply_markup)
 
     async def edit_ephemeral_message_media(
@@ -8571,6 +8655,7 @@ class AsyncTeleBot:
             self, chat_id: Union[int, str], receiver_user_id: int, ephemeral_message_id: int, caption: Optional[str]=None,
             parse_mode: Optional[str]=None,
             caption_entities: Optional[List[types.MessageEntity]]=None,
+            show_caption_above_media: Optional[bool]=None,
             reply_markup: Optional[types.InlineKeyboardMarkup]=None) -> bool:
         """
         Use this method to edit the caption of an ephemeral message. Note that it is not guaranteed
@@ -8606,7 +8691,7 @@ class AsyncTeleBot:
 
         return await asyncio_helper.edit_ephemeral_message_caption(
             self.token, chat_id, receiver_user_id, ephemeral_message_id, caption,
-            parse_mode=parse_mode, caption_entities=caption_entities,
+            parse_mode=parse_mode, caption_entities=caption_entities, show_caption_above_media=show_caption_above_media,
             reply_markup=reply_markup)
 
     
@@ -10675,3 +10760,28 @@ class AsyncTeleBot:
         for key, value in kwargs.items():
             await self.current_states.set_data(chat_id, user_id, key, value,
                 bot_id=bot_id, business_connection_id=business_connection_id, message_thread_id=message_thread_id)
+
+    @staticmethod
+    def _convert_deprecated_ephemeral_parameters(
+            receiver_user_id, callback_query_id, ephemeral_message_parameters):
+        """Convert Bot API 10.2 ephemeral message arguments to their 10.3 replacement."""
+        if receiver_user_id is not None or callback_query_id is not None:
+            logger.warning(
+                "The parameters 'receiver_user_id' and 'callback_query_id' are deprecated. "
+                "Use 'ephemeral_message_parameters' instead."
+            )
+            if ephemeral_message_parameters is not None:
+                logger.warning(
+                    "Both 'ephemeral_message_parameters' and deprecated 'receiver_user_id' or "
+                    "'callback_query_id' are set: using 'ephemeral_message_parameters'."
+                )
+            elif receiver_user_id is None:
+                logger.warning(
+                    "The deprecated 'callback_query_id' cannot be converted without "
+                    "'receiver_user_id'; no ephemeral message parameters will be sent."
+                )
+            else:
+                ephemeral_message_parameters = types.EphemeralMessageParameters(
+                    receiver_user_id, callback_query_id
+                )
+        return ephemeral_message_parameters
