@@ -5099,6 +5099,9 @@ class TeleBot:
         :param can_delete_stories: Pass True if the administrator can delete the channel's stories
         :type can_delete_stories: :obj:`bool`
 
+        :param can_send_welcome_messages: Pass True if the administrator can manage or send chat welcome messages
+        :type can_send_welcome_messages: :obj:`bool`
+
         :param can_manage_direct_messages: Pass True if the administrator can manage direct messages
             within the channel and decline suggested posts; for channels only
         :type can_manage_direct_messages: :obj:`bool`
@@ -7017,6 +7020,9 @@ class TeleBot:
         :param entities: A JSON-serialized list of special entities that appear in message text, which can be specified instead of parse_mode
         :type entities: :obj:`list` of :obj:`MessageEntity`
 
+        :param rich_message: New rich content of the message; required if text isn't specified
+        :type rich_message: :obj:`InputRichMessage`
+
         :param link_preview_options: Link preview generation options for the message
         :type link_preview_options: :obj:`LinkPreviewOptions`
 
@@ -7094,6 +7100,9 @@ class TeleBot:
 
         :param caption_entities: A JSON-serialized list of special entities that appear in the caption, which can be specified instead of parse_mode
         :type caption_entities: :obj:`list` of :obj:`MessageEntity`
+
+        :param show_caption_above_media: Pass True if the caption must be shown above the message media. Supported only for animation, photo and video messages.
+        :type show_caption_above_media: :obj:`bool`
 
         :param reply_markup: A JSON-serialized object for an inline keyboard
         :type reply_markup: :obj:`InlineKeyboardMarkup`
