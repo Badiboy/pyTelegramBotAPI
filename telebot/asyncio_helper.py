@@ -329,6 +329,7 @@ async def send_message(
         params['ephemeral_message_parameters'] = ephemeral_message_parameters.to_json()
     return await _process_request(token, method_name, params=params, method='post')
 
+
 async def send_rich_message(
         token, chat_id, rich_message,
         disable_notification=None, protect_content=None, message_effect_id=None,
@@ -360,6 +361,7 @@ async def send_rich_message(
         payload['ephemeral_message_parameters'] = ephemeral_message_parameters.to_json()
     
     return await _process_request(token, method_url, params=payload, method='post')
+
 
 async def send_rich_message_draft(token, chat_id, draft_id, rich_message, message_thread_id=None, can_stop=None, keep_on_stop=None):
     method_url = r'sendRichMessageDraft'
@@ -991,9 +993,10 @@ async def send_contact(
         payload['ephemeral_message_parameters'] = ephemeral_message_parameters.to_json()
     return await _process_request(token, method_url, params=payload)
 
+
 async def send_message_draft(
         token, chat_id, draft_id, text,
-        message_thread_id=None, parse_mode=None, entities=None):
+        message_thread_id=None, parse_mode=None, entities=None, can_stop=None, keep_on_stop=None):
     method_url = r'sendMessageDraft'
     payload = {'chat_id': chat_id, 'draft_id': draft_id, 'text': text}
     if message_thread_id is not None:
@@ -1002,7 +1005,12 @@ async def send_message_draft(
         payload['parse_mode'] = parse_mode
     if entities:
         payload['entities'] = json.dumps(types.MessageEntity.to_list_of_dicts(entities))
+    if can_stop is not None:
+        payload['can_stop'] = can_stop
+    if keep_on_stop is not None:
+        payload['keep_on_stop'] = keep_on_stop
     return await _process_request(token, method_url, params=payload)
+
 
 async def send_chat_action(token, chat_id, action, timeout=None, message_thread_id=None, business_connection_id=None):
     method_url = r'sendChatAction'

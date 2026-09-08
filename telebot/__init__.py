@@ -2715,7 +2715,8 @@ class TeleBot:
     
     def send_live_photo(
             self, chat_id: Union[int, str], live_photo: Union[Any, str], photo: Union[Any, str],
-            message_thread_id: Optional[int]=None, business_connection_id: Optional[str]=None,
+            message_thread_id: Optional[int]=None, direct_messages_topic_id: Optional[int]=None,
+            business_connection_id: Optional[str]=None,
             caption: Optional[str]=None, parse_mode: Optional[str]=None,
             caption_entities: Optional[List[types.MessageEntity]]=None, show_caption_above_media: Optional[bool]=None,
             has_spoiler: Optional[bool]=None, disable_notification: Optional[bool]=None, protect_content: Optional[bool]=None,
@@ -2730,6 +2731,9 @@ class TeleBot:
 
         :param message_thread_id: Identifier of a message thread, in which the message will be sent
         :type message_thread_id: :obj:`int`
+
+        :param direct_messages_topic_id: Identifier of the direct messages topic to which the message will be sent; required if the message is sent to a direct messages chat
+        :type direct_messages_topic_id: :obj:`int`
 
         :param business_connection_id: Unique identifier of the business connection on behalf of which the message will be sent
         :type business_connection_id: :obj:`str`
@@ -2799,6 +2803,7 @@ class TeleBot:
         return types.Message.de_json(
             apihelper.send_live_photo(
                 self.token, chat_id, live_photo, photo, message_thread_id=message_thread_id,
+                direct_messages_topic_id=direct_messages_topic_id,
                 business_connection_id=business_connection_id, caption=caption, parse_mode=parse_mode,
                 caption_entities=caption_entities, show_caption_above_media=show_caption_above_media,
                 has_spoiler=has_spoiler, disable_notification=disable_notification, protect_content=protect_content,
@@ -4674,13 +4679,20 @@ class TeleBot:
         :param entities: A JSON-serialized list of special entities that appear in message text, which can be specified instead of parse_mode
         :type entities: :obj:`list` of :class:`telebot.types.MessageEntity
 
+        :param can_stop: Optional. Pass True if the user can stop message generation
+        :type can_stop: :obj:`bool`
+
+        :param keep_on_stop: Optional. Pass True if the generated message must be kept after the user stops generation
+        :type keep_on_stop: :obj:`bool`
+
         :return: Returns True on success.
         :rtype: :obj:`bool`
         """
         return apihelper.send_message_draft(
             self.token, chat_id, draft_id, text, parse_mode=parse_mode, entities=entities, message_thread_id=message_thread_id,
             can_stop=can_stop, keep_on_stop=keep_on_stop)
-    
+
+
     def send_rich_message(
             self, chat_id: Union[int, str],
             rich_message: types.InputRichMessage,
@@ -4755,6 +4767,7 @@ class TeleBot:
                 ephemeral_message_parameters=ephemeral_message_parameters)
             )
 
+
     def send_rich_message_draft(
             self, chat_id: int,
             draft_id: int,
@@ -4779,6 +4792,12 @@ class TeleBot:
 
         :param message_thread_id: Unique identifier for the target message thread
         :type message_thread_id: :obj:`int`
+
+        :param can_stop: Optional. Pass True if the user can stop message generation
+        :type can_stop: :obj:`bool`
+
+        :param keep_on_stop: Optional. Pass True if the generated message must be kept after the user stops generation
+        :type keep_on_stop: :obj:`bool`
 
         :return: Returns True on success.
         :rtype: :obj:`bool`

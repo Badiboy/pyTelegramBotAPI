@@ -4452,7 +4452,8 @@ class AsyncTeleBot:
 
     async def send_live_photo(
             self, chat_id: Union[int, str], live_photo: Union[Any, str], photo: Union[Any, str],
-            message_thread_id: Optional[int] = None, business_connection_id: Optional[str]=None,
+            message_thread_id: Optional[int] = None, direct_messages_topic_id: Optional[int]=None,
+            business_connection_id: Optional[str]=None,
             caption: Optional[str]=None, parse_mode: Optional[str]=None,
             caption_entities: Optional[List[types.MessageEntity]]=None,
             show_caption_above_media: Optional[bool]=None, has_spoiler: Optional[bool]=None,
@@ -4468,6 +4469,9 @@ class AsyncTeleBot:
 
         :param message_thread_id: Identifier of a message thread, in which the message will be sent
         :type message_thread_id: :obj:`int`
+
+        :param direct_messages_topic_id: Identifier of the direct messages topic to which the message will be sent; required if the message is sent to a direct messages chat
+        :type direct_messages_topic_id: :obj:`int`
 
         :param business_connection_id: Unique identifier of the business connection on behalf of which the message will be sent
         :type business_connection_id: :obj:`str`
@@ -4539,6 +4543,7 @@ class AsyncTeleBot:
         return types.Message.de_json(
             await asyncio_helper.send_live_photo(
                 self.token, chat_id, live_photo, photo, message_thread_id=message_thread_id,
+                direct_messages_topic_id=direct_messages_topic_id,
                 business_connection_id=business_connection_id, caption=caption, parse_mode=parse_mode,
                 caption_entities=caption_entities, show_caption_above_media=show_caption_above_media,
                 has_spoiler=has_spoiler, disable_notification=disable_notification, protect_content=protect_content,
@@ -6489,7 +6494,8 @@ class AsyncTeleBot:
             self, chat_id: int,
             draft_id: int,
             rich_message: types.InputRichMessage,
-            message_thread_id: Optional[int]=None) -> bool:
+            message_thread_id: Optional[int]=None, can_stop: Optional[bool]=None,
+            keep_on_stop: Optional[bool]=None) -> bool:
         """
         Use this method to stream a partial rich message to a user while the message is being generated
         Note that the streamed draft is ephemeral and acts as a temporary 30-second preview - once the output is finalized,
@@ -6509,11 +6515,18 @@ class AsyncTeleBot:
         :param message_thread_id: Unique identifier for the target message thread
         :type message_thread_id: :obj:`int`
 
+        :param can_stop: Optional. Pass True if the user can stop message generation
+        :type can_stop: :obj:`bool`
+
+        :param keep_on_stop: Optional. Pass True if the generated message must be kept after the user stops generation
+        :type keep_on_stop: :obj:`bool`
+
         :return: Returns True on success.
         :rtype: :obj:`bool`
         """
         return await asyncio_helper.send_rich_message_draft(
-            self.token, chat_id, draft_id, rich_message, message_thread_id=message_thread_id)
+            self.token, chat_id, draft_id, rich_message, message_thread_id=message_thread_id,
+            can_stop=can_stop, keep_on_stop=keep_on_stop)
         
     async def send_message_draft(
             self, chat_id: int,
@@ -6521,7 +6534,8 @@ class AsyncTeleBot:
             text: str,
             message_thread_id: Optional[int]=None,
             parse_mode: Optional[str]=None,
-            entities: Optional[List[types.MessageEntity]]=None):
+            entities: Optional[List[types.MessageEntity]]=None, can_stop: Optional[bool]=None,
+            keep_on_stop: Optional[bool]=None):
         """
         Use this method to stream a partial message to a user while the message is being generated;
         available for all bots. Returns True on success.
@@ -6546,11 +6560,18 @@ class AsyncTeleBot:
         :param entities: A JSON-serialized list of special entities that appear in message text, which can be specified instead of parse_mode
         :type entities: :obj:`list` of :class:`telebot.types.MessageEntity
 
+        :param can_stop: Optional. Pass True if the user can stop message generation
+        :type can_stop: :obj:`bool`
+
+        :param keep_on_stop: Optional. Pass True if the generated message must be kept after the user stops generation
+        :type keep_on_stop: :obj:`bool`
+
         :return: Returns True on success.
         :rtype: :obj:`bool`
         """
         return await asyncio_helper.send_message_draft(
-            self.token, chat_id, draft_id, text, parse_mode=parse_mode, entities=entities, message_thread_id=message_thread_id)
+            self.token, chat_id, draft_id, text, parse_mode=parse_mode, entities=entities,
+            message_thread_id=message_thread_id, can_stop=can_stop, keep_on_stop=keep_on_stop)
 
     async def send_chat_action(
             self, chat_id: Union[int, str], action: str, timeout: Optional[int]=None, message_thread_id: Optional[int]=None,
