@@ -17493,7 +17493,7 @@ class InputRichBlockThinking(InputRichBlock):
 
 class DisabledButton(Dictionaryable, JsonSerializable, JsonDeserializable):
     """
-    Represents a disabled inline or rich-message button.
+    This object represents a disabled button which does nothing. Currently holds no information.
 
     Telegram documentation: https://core.telegram.org/bots/api#disabledbutton
 
@@ -17550,7 +17550,7 @@ class EphemeralMessageParameters(Dictionaryable, JsonSerializable):
 
 class MessageGenerationStopped(JsonDeserializable):
     """
-    Describes an update about a user stopping message generation.
+    This object describes an update about a user stopping message generation.
 
     Telegram documentation: https://core.telegram.org/bots/api#messagegenerationstopped
 
@@ -17581,9 +17581,7 @@ class MessageGenerationStopped(JsonDeserializable):
 
 class RichMessageButton(Dictionaryable, JsonSerializable, JsonDeserializable):
     """
-    Represents a button in a rich formatted message.
-
-    Exactly one field other than text and style must be specified to define the button action.
+    This object represents a button in a RichMessage. Exactly one of the fields other than text and style must be used to specify the type of the button.
 
     Telegram documentation: https://core.telegram.org/bots/api#richmessagebutton
 
@@ -17689,7 +17687,7 @@ class RichMessageButton(Dictionaryable, JsonSerializable, JsonDeserializable):
 
 class RichTextButton(RichText):
     """
-    Represents a button in rich text.
+    A button.
 
     Telegram documentation: https://core.telegram.org/bots/api#richtextbutton
 
@@ -17721,7 +17719,7 @@ class RichTextButton(RichText):
 
 class RichBlockButtons(RichBlock):
     """
-    Represents a block containing buttons shown in one row.
+    A block containing a list of buttons that are shown in one row, corresponding to the custom HTML tag <tg-button-row>.
 
     Telegram documentation: https://core.telegram.org/bots/api#richblockbuttons
 
@@ -17752,7 +17750,7 @@ class RichBlockButtons(RichBlock):
 
 class InputRichBlockButtons(InputRichBlock):
     """
-    Represents a button row in a rich formatted message to be sent.
+    A block containing a list of buttons that are shown in one row, corresponding to the custom HTML tag <tg-button-row>.
 
     Telegram documentation: https://core.telegram.org/bots/api#inputrichblockbuttons
 
@@ -17783,7 +17781,7 @@ class InputRichBlockButtons(InputRichBlock):
 
 class RichBlockExpandableBlockQuotation(RichBlock):
     """
-    Represents an expandable block quotation.
+    A block quotation, corresponding to the HTML tag <blockquote> with custom attribute "expandable".
 
     Telegram documentation: https://core.telegram.org/bots/api#richblockexpandableblockquotation
 
@@ -17816,7 +17814,7 @@ class RichBlockExpandableBlockQuotation(RichBlock):
 
 class InputRichBlockExpandableBlockQuotation(InputRichBlock):
     """
-    Represents an expandable block quotation in a rich formatted message to be sent.
+    A block quotation, corresponding to the HTML tag <blockquote> with custom attribute "expandable".
 
     Telegram documentation: https://core.telegram.org/bots/api#inputrichblockexpandableblockquotation
 
@@ -17847,7 +17845,7 @@ class InputRichBlockExpandableBlockQuotation(InputRichBlock):
 
 class RichBlockDocument(RichBlock):
     """
-    Represents a block with a general file.
+    A block with a general file, corresponding to the custom HTML tag <tg-document>.
 
     Telegram documentation: https://core.telegram.org/bots/api#richblockdocument
 
@@ -17879,7 +17877,7 @@ class RichBlockDocument(RichBlock):
 
 class InputRichBlockDocument(InputRichBlock):
     """
-    Represents a block with a general file in a rich formatted message to be sent.
+    A block with a general file, corresponding to the custom HTML tag <tg-document>.
 
     Telegram documentation: https://core.telegram.org/bots/api#inputrichblockdocument
 
