@@ -3619,7 +3619,7 @@ class AsyncTeleBot:
         :param callback_query_id: Deprecated. Use ephemeral_message_parameters instead.
         :type callback_query_id: :obj:`str`
 
-        :param ephemeral_message_parameters: Parameters of the ephemeral message to send.
+        :param ephemeral_message_parameters: Optional. A JSON-serialized object containing the parameters of the ephemeral message to send
         :type ephemeral_message_parameters: :class:`telebot.types.EphemeralMessageParameters`
 
         :return: On success, the sent Message is returned.
@@ -4404,7 +4404,7 @@ class AsyncTeleBot:
         :param callback_query_id: Deprecated. Use ephemeral_message_parameters instead.
         :type callback_query_id: :obj:`str`
 
-        :param ephemeral_message_parameters: Parameters of the ephemeral message to send.
+        :param ephemeral_message_parameters: Optional. A JSON-serialized object containing the parameters of the ephemeral message to send
         :type ephemeral_message_parameters: :class:`telebot.types.EphemeralMessageParameters`
 
         :return: On success, the sent Message is returned.
@@ -4470,7 +4470,7 @@ class AsyncTeleBot:
         :param message_thread_id: Identifier of a message thread, in which the message will be sent
         :type message_thread_id: :obj:`int`
 
-        :param direct_messages_topic_id: Identifier of the direct messages topic to which the message will be sent; required if the message is sent to a direct messages chat
+        :param direct_messages_topic_id: Optional. Identifier of the direct messages topic to which the message will be sent; required if the message is sent to a direct messages chat
         :type direct_messages_topic_id: :obj:`int`
 
         :param business_connection_id: Unique identifier of the business connection on behalf of which the message will be sent
@@ -4528,7 +4528,7 @@ class AsyncTeleBot:
         :type reply_markup: :class:`telebot.types.InlineKeyboardMarkup` or :class:`telebot.types.ReplyKeyboardMarkup` or :class:`telebot.types.ReplyKeyboardRemove`
             or :class:`telebot.types.ForceReply`
 
-        :param ephemeral_message_parameters: Parameters of the ephemeral message to send
+        :param ephemeral_message_parameters: Optional. A JSON-serialized object containing the parameters of the ephemeral message to send
         :type ephemeral_message_parameters: :class:`telebot.types.EphemeralMessageParameters`
 
         :return: On success, the sent Message is returned.
@@ -4671,7 +4671,7 @@ class AsyncTeleBot:
         :param callback_query_id: Deprecated. Use ephemeral_message_parameters instead.
         :type callback_query_id: :obj:`str`
 
-        :param ephemeral_message_parameters: Parameters of the ephemeral message to send.
+        :param ephemeral_message_parameters: Optional. A JSON-serialized object containing the parameters of the ephemeral message to send
         :type ephemeral_message_parameters: :class:`telebot.types.EphemeralMessageParameters`
 
         :return: On success, the sent Message is returned.
@@ -4816,7 +4816,7 @@ class AsyncTeleBot:
         :param callback_query_id: Deprecated. Use ephemeral_message_parameters instead.
         :type callback_query_id: :obj:`str`
 
-        :param ephemeral_message_parameters: Parameters of the ephemeral message to send.
+        :param ephemeral_message_parameters: Optional. A JSON-serialized object containing the parameters of the ephemeral message to send
         :type ephemeral_message_parameters: :class:`telebot.types.EphemeralMessageParameters`
 
         :return: On success, the sent Message is returned.
@@ -4974,7 +4974,7 @@ class AsyncTeleBot:
         :param callback_query_id: Deprecated. Use ephemeral_message_parameters instead.
         :type callback_query_id: :obj:`str`
 
-        :param ephemeral_message_parameters: Parameters of the ephemeral message to send.
+        :param ephemeral_message_parameters: Optional. A JSON-serialized object containing the parameters of the ephemeral message to send
         :type ephemeral_message_parameters: :class:`telebot.types.EphemeralMessageParameters`
 
         :return: On success, the sent Message is returned.
@@ -5125,7 +5125,7 @@ class AsyncTeleBot:
         :param callback_query_id: Deprecated. Use ephemeral_message_parameters instead.
         :type callback_query_id: :obj:`str`
 
-        :param ephemeral_message_parameters: Parameters of the ephemeral message to send.
+        :param ephemeral_message_parameters: Optional. A JSON-serialized object containing the parameters of the ephemeral message to send
         :type ephemeral_message_parameters: :class:`telebot.types.EphemeralMessageParameters`
 
         :return: On success, the sent Message is returned.
@@ -5312,7 +5312,7 @@ class AsyncTeleBot:
         :param callback_query_id: Deprecated. Use ephemeral_message_parameters instead.
         :type callback_query_id: :obj:`str`
 
-        :param ephemeral_message_parameters: Parameters of the ephemeral message to send.
+        :param ephemeral_message_parameters: Optional. A JSON-serialized object containing the parameters of the ephemeral message to send
         :type ephemeral_message_parameters: :class:`telebot.types.EphemeralMessageParameters`
 
         :return: On success, the sent Message is returned.
@@ -5490,7 +5490,7 @@ class AsyncTeleBot:
         :param callback_query_id: Deprecated. Use ephemeral_message_parameters instead.
         :type callback_query_id: :obj:`str`
 
-        :param ephemeral_message_parameters: Parameters of the ephemeral message to send.
+        :param ephemeral_message_parameters: Optional. A JSON-serialized object containing the parameters of the ephemeral message to send
         :type ephemeral_message_parameters: :class:`telebot.types.EphemeralMessageParameters`
 
         :return: On success, the sent Message is returned.
@@ -5641,7 +5641,7 @@ class AsyncTeleBot:
         :param callback_query_id: Deprecated. Use ephemeral_message_parameters instead.
         :type callback_query_id: :obj:`str`
 
-        :param ephemeral_message_parameters: Parameters of the ephemeral message to send.
+        :param ephemeral_message_parameters: Optional. A JSON-serialized object containing the parameters of the ephemeral message to send
         :type ephemeral_message_parameters: :class:`telebot.types.EphemeralMessageParameters`
 
         :return: On success, the sent Message is returned.
@@ -5969,7 +5969,7 @@ class AsyncTeleBot:
         :param callback_query_id: Deprecated. Use ephemeral_message_parameters instead.
         :type callback_query_id: :obj:`str`
 
-        :param ephemeral_message_parameters: Parameters of the ephemeral message to send.
+        :param ephemeral_message_parameters: Optional. A JSON-serialized object containing the parameters of the ephemeral message to send
         :type ephemeral_message_parameters: :class:`telebot.types.EphemeralMessageParameters`
 
         :return: On success, the sent Message is returned.
@@ -6228,7 +6228,7 @@ class AsyncTeleBot:
         :param callback_query_id: Deprecated. Use ephemeral_message_parameters instead.
         :type callback_query_id: :obj:`str`
 
-        :param ephemeral_message_parameters: Parameters of the ephemeral message to send.
+        :param ephemeral_message_parameters: Optional. A JSON-serialized object containing the parameters of the ephemeral message to send
         :type ephemeral_message_parameters: :class:`telebot.types.EphemeralMessageParameters`
 
         :return: On success, the sent Message is returned.
@@ -6364,7 +6364,7 @@ class AsyncTeleBot:
         :param callback_query_id: Deprecated. Use ephemeral_message_parameters instead.
         :type callback_query_id: :obj:`str`
 
-        :param ephemeral_message_parameters: Parameters of the ephemeral message to send.
+        :param ephemeral_message_parameters: Optional. A JSON-serialized object containing the parameters of the ephemeral message to send
         :type ephemeral_message_parameters: :class:`telebot.types.EphemeralMessageParameters`
 
         :return: On success, the sent Message is returned.
@@ -6473,7 +6473,7 @@ class AsyncTeleBot:
         :type reply_markup: :class:`telebot.types.InlineKeyboardMarkup` or :class:`telebot.types.ReplyKeyboardMarkup` or :class:`telebot.types.ReplyKeyboardRemove`
             or :class:`telebot.types.ForceReply`
 
-        :param ephemeral_message_parameters: Parameters of the ephemeral message to send
+        :param ephemeral_message_parameters: Optional. A JSON-serialized object containing the parameters of the ephemeral message to send
         :type ephemeral_message_parameters: :class:`telebot.types.EphemeralMessageParameters`
 
         :return: On success, the sent Message is returned.
@@ -6515,10 +6515,10 @@ class AsyncTeleBot:
         :param message_thread_id: Unique identifier for the target message thread
         :type message_thread_id: :obj:`int`
 
-        :param can_stop: Optional. Pass True if the user can stop message generation
+        :param can_stop: Optional. Pass True to show the user a button to stop further drafts. The bot will receive an Update “stopped_message_generation” if the user presses the button.
         :type can_stop: :obj:`bool`
 
-        :param keep_on_stop: Optional. Pass True if the generated message must be kept after the user stops generation
+        :param keep_on_stop: Optional. Pass True to keep the draft in the chat when the button is pressed. The draft will still disappear after a short time or if the bot sends a message. To fully preserve the partial draft, the bot should send it as a new message.
         :type keep_on_stop: :obj:`bool`
 
         :return: Returns True on success.
@@ -6560,10 +6560,10 @@ class AsyncTeleBot:
         :param entities: A JSON-serialized list of special entities that appear in message text, which can be specified instead of parse_mode
         :type entities: :obj:`list` of :class:`telebot.types.MessageEntity
 
-        :param can_stop: Optional. Pass True if the user can stop message generation
+        :param can_stop: Optional. Pass True to show the user a button to stop further drafts. The bot will receive an Update “stopped_message_generation” if the user presses the button.
         :type can_stop: :obj:`bool`
 
-        :param keep_on_stop: Optional. Pass True if the generated message must be kept after the user stops generation
+        :param keep_on_stop: Optional. Pass True to keep the draft in the chat when the button is pressed. The draft will still disappear after a short time or if the bot sends a message. To fully preserve the partial draft, the bot should send it as a new message.
         :type keep_on_stop: :obj:`bool`
 
         :return: Returns True on success.
@@ -6856,7 +6856,7 @@ class AsyncTeleBot:
         :param can_delete_stories: Pass True if the administrator can delete the channel's stories
         :type can_delete_stories: :obj:`bool`
 
-        :param can_send_welcome_messages: Pass True if the administrator can manage or send chat welcome messages
+        :param can_send_welcome_messages: Optional. Pass True if the administrator can manage chat welcome messages or directly send them in the case of bots
         :type can_send_welcome_messages: :obj:`bool`
 
         :param can_manage_direct_messages: Pass True if the administrator can manage direct messages
@@ -8696,7 +8696,7 @@ class AsyncTeleBot:
         :param entities: A JSON-serialized list of special entities that appear in message text, which can be specified instead of parse_mode
         :type entities: :obj:`list` of :obj:`MessageEntity`
 
-        :param rich_message: New rich content of the message; required if text isn't specified
+        :param rich_message: Optional. New rich content of the message; required if text isn't specified
         :type rich_message: :obj:`InputRichMessage`
 
         :param link_preview_options: Link preview generation options for the message
@@ -8777,7 +8777,7 @@ class AsyncTeleBot:
         :param caption_entities: A JSON-serialized list of special entities that appear in the caption, which can be specified instead of parse_mode
         :type caption_entities: :obj:`list` of :obj:`MessageEntity`
 
-        :param show_caption_above_media: Pass True if the caption must be shown above the message media. Supported only for animation, photo and video messages.
+        :param show_caption_above_media: Optional. Pass True if the caption must be shown above the message media. Supported only for animation, photo and video messages.
         :type show_caption_above_media: :obj:`bool`
 
         :param reply_markup: A JSON-serialized object for an inline keyboard

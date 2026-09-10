@@ -203,7 +203,7 @@ class Update(JsonDeserializable):
     :param subscription: Optional. User payment subscription has changed
     :type subscription: :class:`telebot.types.BotSubscriptionUpdated`
 
-    :param stopped_message_generation: Optional. A user asked the bot to stop message generation
+    :param stopped_message_generation: Optional. A user asked the bot to stop the generation of a message
     :type stopped_message_generation: :class:`telebot.types.MessageGenerationStopped`
 
     :return: Instance of the class
@@ -2802,7 +2802,7 @@ class ReplyKeyboardMarkup(JsonSerializable):
     :param is_persistent: Optional. Requests clients to always show the keyboard when the regular keyboard is hidden. Defaults to False, in which case the custom keyboard can be hidden and opened with a keyboard icon.
     :type is_persistent: :obj:`bool`
 
-    :param force_reply: Optional. Shows the reply interface to the user
+    :param force_reply: Optional. Pass True if the reply interface must be shown to the user, as if they had manually selected the bot's message and tapped 'Reply'
     :type force_reply: :obj:`bool`
 
     :param row_width: Non-API. The width of the row in the keyboard when adding keys using "add" method. Defaults to 3. Maximum value is 12.
@@ -3201,7 +3201,7 @@ class InlineKeyboardMarkup(Dictionaryable, JsonSerializable, JsonDeserializable)
     :param inline_keyboard: Array of button rows, each represented by an Array of InlineKeyboardButton objects
     :type inline_keyboard: :obj:`list` of :obj:`list` of :class:`telebot.types.InlineKeyboardButton`
 
-    :param force_reply: Optional. Shows the reply interface to the user
+    :param force_reply: Optional. Pass True if the reply interface must be shown to the user, as if they had manually selected the bot's message and tapped 'Reply'. The value of the field can't be changed when the inline keyboard is edited.
     :type force_reply: :obj:`bool`
 
     :param keyboard: Deprecated. Use inline_keyboard instead.
@@ -3352,7 +3352,7 @@ class InlineKeyboardButton(Dictionaryable, JsonSerializable, JsonDeserializable)
     :param copy_text: Optional. Description of the button that copies the specified text to the clipboard.
     :type copy_text: :class:`telebot.types.CopyTextButton`
 
-    :param disabled: Optional. Description of a disabled button
+    :param disabled: Optional. If set, then the button is disabled and does nothing
     :type disabled: :class:`telebot.types.DisabledButton`
 
     :return: Instance of the class
@@ -3698,7 +3698,7 @@ class ChatMemberAdministrator(ChatMember):
     :param can_delete_stories: True, if the administrator can delete stories posted by other users
     :type can_delete_stories: :obj:`bool`
 
-    :param can_send_welcome_messages: Optional. True, if the administrator can manage or send chat welcome messages
+    :param can_send_welcome_messages: True, if the administrator can manage chat welcome messages or directly send them in the case of bots
     :type can_send_welcome_messages: :obj:`bool`
 
     :param can_post_messages: Optional. True, if the administrator can post messages in the channel, approve suggested posts, or access channel statistics; for channels only
@@ -8368,7 +8368,7 @@ class ChatAdministratorRights(JsonDeserializable, JsonSerializable, Dictionaryab
     :param can_delete_stories: True, if the administrator can delete stories posted by other users
     :type can_delete_stories: :obj:`bool`
 
-    :param can_send_welcome_messages: Optional. True, if the administrator can manage or send chat welcome messages
+    :param can_send_welcome_messages: True, if the administrator can manage chat welcome messages or directly send them in the case of bots
     :type can_send_welcome_messages: :obj:`bool`
 
     :param can_manage_direct_messages: Optional. True, if the administrator can manage direct messages of the channel and decline suggested posts; for channels only
@@ -13234,13 +13234,13 @@ class UniqueGiftInfo(JsonDeserializable):
     :param last_resale_amount: Optional. For gifts bought from other users, the price paid for the gift in either Telegram Stars or nanograms
     :type last_resale_amount: :obj:`int`
 
-    :param text: Optional. Text accompanying the gift
+    :param text: Optional. Text of the message that was added to the gift
     :type text: :obj:`str`
 
-    :param entities: Optional. Special entities that appear in text
+    :param entities: Optional. Special entities that appear in the text
     :type entities: :obj:`list` of :class:`telebot.types.MessageEntity`
 
-    :param is_private: Optional. True, if the gift must not be shown publicly
+    :param is_private: Optional. True, if the sender and gift text are shown only to the gift receiver; otherwise, everyone will be able to see them
     :type is_private: :obj:`bool`
 
     :param owned_gift_id: Optional. Unique identifier of the received gift for the bot; only present for gifts received on behalf of business accounts
@@ -16248,7 +16248,7 @@ class RichBlockTable(RichBlock):
     :param is_striped: Optional. True, if the table is striped
     :type is_striped: :obj:`bool`
 
-    :param is_compact: Optional. True, if the table must use compact spacing
+    :param is_compact: Optional. True, if table cells have smaller indents
     :type is_compact: :obj:`bool`
 
     :param caption: Optional. Caption of the table
@@ -17176,7 +17176,7 @@ class InputRichBlockTable(InputRichBlock):
     :param is_striped: Optional. Pass True if the table is striped
     :type is_striped: :obj:`bool`
 
-    :param is_compact: Optional. Pass True if the table must use compact spacing
+    :param is_compact: Optional. Pass True if table cells must have smaller indents
     :type is_compact: :obj:`bool`
 
     :param caption: Optional. Caption of the table
@@ -17518,13 +17518,13 @@ class EphemeralMessageParameters(Dictionaryable, JsonSerializable):
 
     Telegram documentation: https://core.telegram.org/bots/api#ephemeralmessageparameters
 
-    :param receiver_user_id: Identifier of the user who will receive the message
+    :param receiver_user_id: Identifier of the user who will receive the message. It is not guaranteed that the user will receive the message, especially if they are offline. See here for more details.
     :type receiver_user_id: :obj:`int`
 
-    :param callback_query_id: Optional. Identifier of the callback query which triggered the message
+    :param callback_query_id: Optional. Identifier of the callback query which triggered the message, if any
     :type callback_query_id: :obj:`str`
 
-    :param replace_callback_query_message: Optional. True, if the ephemeral message must replace the original message
+    :param replace_callback_query_message: Optional. Pass True if the ephemeral message must be shown in place of the original message. Must be False for callback queries from ephemeral messages, which must be edited using regular editEphemeralMessage… methods.
     :type replace_callback_query_message: :obj:`bool`
 
     :return: Instance of the class
@@ -17557,10 +17557,10 @@ class MessageGenerationStopped(JsonDeserializable):
     :param chat: Chat in which the message is generated
     :type chat: :class:`telebot.types.Chat`
 
-    :param draft_id: Unique identifier of the stopped message draft
+    :param draft_id: Unique identifier of the message draft which was stopped
     :type draft_id: :obj:`int`
 
-    :param message_thread_id: Optional. Identifier of the message thread in which the message is generated
+    :param message_thread_id: Optional. Unique identifier of the message thread in which the message is generated
     :type message_thread_id: :obj:`int`
 
     :return: Instance of the class
@@ -17587,37 +17587,37 @@ class RichMessageButton(Dictionaryable, JsonSerializable, JsonDeserializable):
 
     Telegram documentation: https://core.telegram.org/bots/api#richmessagebutton
 
-    :param text: Text of the button
+    :param text: Text of the button. May contain only plain text, RichTextCustomEmoji and RichTextDateTime entities.
     :type text: :class:`telebot.types.RichText`
 
-    :param style: Optional. Style of the button
+    :param style: Optional. Style of the button. Must be one of “danger”, “success”, “primary”, or “link” (the button is shown as a regular link without borders). Apps may use theme-specific colors for the button background and text based on the style. The style “link” is allowed only for callback buttons.
     :type style: :obj:`str`
 
-    :param url: Optional. HTTP or tg:// URL to open when the button is pressed
+    :param url: Optional. HTTP or tg:// URL to be opened when the button is pressed. Links tg://user?id=<user_id> can be used to mention a user by their identifier without using a username, if this is allowed by their privacy settings.
     :type url: :obj:`str`
 
-    :param callback_data: Optional. Data to send in a callback query when the button is pressed
+    :param callback_data: Optional. Data to be sent in a callback query to the bot when the button is pressed, 1-64 bytes
     :type callback_data: :obj:`str`
 
-    :param web_app: Optional. Description of the Web App to launch when the button is pressed
+    :param web_app: Optional. Description of the Web App that will be launched when the user presses the button. The Web App will be able to send an arbitrary message on behalf of the user using the method answerWebAppQuery. Available only in private chats between a user and the bot. Not supported for messages sent on behalf of a business account.
     :type web_app: :class:`telebot.types.WebAppInfo`
 
-    :param login_url: Optional. HTTPS URL used to automatically authorize the user
+    :param login_url: Optional. An HTTPS URL used to automatically authorize the user. Can be used as a replacement for the Telegram Login Widget. Not supported for ephemeral messages.
     :type login_url: :class:`telebot.types.LoginUrl`
 
-    :param switch_inline_query: Optional. Inline query to insert after the user chooses a chat
+    :param switch_inline_query: Optional. If set, pressing the button will prompt the user to select one of their chats, open that chat and insert the bot's username and the specified inline query in the input field. May be empty, in which case just the bot's username will be inserted. Not supported for messages sent in channel direct messages chats and on behalf of a business account.
     :type switch_inline_query: :obj:`str`
 
-    :param switch_inline_query_current_chat: Optional. Inline query to insert in the current chat
+    :param switch_inline_query_current_chat: Optional. If set, pressing the button will insert the bot's username and the specified inline query in the current chat's input field. May be empty, in which case only the bot's username will be inserted. Not supported in channels and for messages sent in channel direct messages chats and on behalf of a business account.
     :type switch_inline_query_current_chat: :obj:`str`
 
-    :param switch_inline_query_chosen_chat: Optional. Criteria for choosing a chat for an inline query
+    :param switch_inline_query_chosen_chat: Optional. If set, pressing the button will prompt the user to select one of their chats of the specified type, open that chat and insert the bot's username and the specified inline query in the input field. Not supported for messages sent in channel direct messages chats and on behalf of a business account.
     :type switch_inline_query_chosen_chat: :class:`telebot.types.SwitchInlineQueryChosenChat`
 
-    :param copy_text: Optional. Description of text to copy to the clipboard
+    :param copy_text: Optional. A button that copies the specified text to the clipboard
     :type copy_text: :class:`telebot.types.CopyTextButton`
 
-    :param disabled: Optional. Marks the button as disabled
+    :param disabled: Optional. If set, then the button is disabled and does nothing
     :type disabled: :class:`telebot.types.DisabledButton`
 
     :return: Instance of the class
@@ -17728,10 +17728,10 @@ class RichBlockButtons(RichBlock):
     :param type: Type of the block, always “buttons”
     :type type: :obj:`str`
 
-    :param buttons: Buttons in the block
+    :param buttons: The buttons
     :type buttons: :obj:`list` of :class:`telebot.types.RichMessageButton`
 
-    :param align: Optional. Horizontal alignment of the buttons
+    :param align: Optional. Horizontal alignment of the buttons. Currently, must be one of “left”, “center”, or “right”.
     :type align: :obj:`str`
 
     :return: Instance of the class
@@ -17759,10 +17759,10 @@ class InputRichBlockButtons(InputRichBlock):
     :param type: Type of the block, always “buttons”
     :type type: :obj:`str`
 
-    :param buttons: Buttons in the block
+    :param buttons: List of 1-8 buttons to send
     :type buttons: :obj:`list` of :class:`telebot.types.RichMessageButton`
 
-    :param align: Optional. Horizontal alignment of the buttons
+    :param align: Optional. Horizontal alignment of the buttons. Currently, must be one of “left”, “center”, or “right”.
     :type align: :obj:`str`
 
     :return: Instance of the class
@@ -17886,7 +17886,7 @@ class InputRichBlockDocument(InputRichBlock):
     :param type: Type of the block, always “document”
     :type type: :obj:`str`
 
-    :param document: The document. Its caption is ignored.
+    :param document: The document. Caption is ignored.
     :type document: :class:`telebot.types.InputMediaDocument`
 
     :param caption: Optional. Caption of the block
@@ -17983,7 +17983,7 @@ class CommunityChatJoined(JsonDeserializable):
 
     Telegram documentation: https://core.telegram.org/bots/api#communitychatjoined
 
-    :param community: Community from which the chat was joined
+    :param community: The community from which the chat was joined
     :type community: :class:`telebot.types.Community`
 
     :return: Instance of the class
